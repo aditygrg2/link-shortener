@@ -1,21 +1,26 @@
 import React from "react";
+// import {Link} from 'react-router-dom';
 import { RxAlignLeft, RxArrowLeft, RxArrowRight, RxCross1, RxHamburgerMenu, RxHome } from 'react-icons/rx';
 
 const NavbarList: React.FC = () => {
 
     interface ulListType {
         listName: string,
+        target : string,
     }
 
     const ulList: ulListType[] = [
         {
             listName: 'My Urls',
+            target : 'myurls',
         },
         {
             listName: 'Plan',
+            target : 'plan'
         },
         {
             listName: 'Features',
+            target : 'features'
         },
     ]
 
@@ -25,9 +30,7 @@ const NavbarList: React.FC = () => {
                 ulList.map((list, index) => {
                     return (
                         <li key={index} className="w-full flex items-center justify-center whitespace-nowrap">
-                            <button title={list.listName} className={`flex w-full justify-center text-gray-400 items-center ${index === 0 ? "active" : ''}`}>
-                                {list.listName}
-                            </button>
+                            <button className={``}>{list.listName}</button>
                         </li>
                     )
                 })
