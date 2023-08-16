@@ -12,7 +12,7 @@ const ParticlesContainer = () => {
 
     return ( 
     <Particles
-        className='h-full w-full absolute translate-z-0 z-0'
+        className='h-full w-full absolute -z-5'
         id='tsparticles' init={particlesInit} loaded={particlesLoaded}
         options={{
             fullScreen: { enable: true },
@@ -46,7 +46,7 @@ const ParticlesContainer = () => {
             },
             particles: {
                 color: {
-                    value: ''
+                    value: '#e68e2e'
                 },
                 links: {
                     color: '#f5d393',

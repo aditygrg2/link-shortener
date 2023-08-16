@@ -18,6 +18,9 @@ module.exports = {
       },
       borderColor : {
         primaryButton : ['#45a0f5'],
+      }, 
+      textColor : {
+        'primaryButton' : '#45a0f5',
       }
     },
   },

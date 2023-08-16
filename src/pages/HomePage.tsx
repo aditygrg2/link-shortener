@@ -68,17 +68,18 @@ const HomePage: React.FC = () => {
     }
 
     return (
-        <div className={`h-full w-full overflow-x-hidden z-100`}>
+        <div className={`h-full w-full overflow-x-hidden relative`}>
             <NavBar />
-            <div className='w-full mt-10 p-4 lg:p-12 flex items-center justify-center'>
-                <div className='w-full text-white'>
-                    <motion.div
-                    variants={fadeIn('right', 0.5)} initial='hidden' animate="show" exit='hidden'
+            <div className='w-full mt-10 p-4 lg:p-12 flex items-center justify-center relative'>
+                <ParticlesContainer />
 
-                    className='flex flex-col space-y-2'>
-                        <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-400'>urls</h1>
-                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-400'>when </h1>
-                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-[#45a0f5]'>the shorter,</h1>
+                <div className='w-full text-white z-10'>
+                    <motion.div
+                        variants={fadeIn('right', 0.5)} initial='hidden' animate="show" exit='hidden'
+                        className='flex flex-col space-y-2'>
+                        <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-500'>urls</h1>
+                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>when </h1>
+                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-white'>the shorter,</h1>
                         <div className='w-full lg:w-[60%] flex flex-col space-y-2'>
                             <div className={`flex items-center space-x-2 bg-[#121212] px-2.5 py-1.5 rounded-full`}>
                                 <div className="">
@@ -94,20 +95,20 @@ const HomePage: React.FC = () => {
                                     <span className="h-6 aspect-square rounded-md border-2 text-xs flex items-center justify-center">2</span>
 
                                     <motion.button
-                                    initial={{
-                                        rotate : '0'
-                                    }}
-                                    animate={{
-                                        rotate : visibleMoreOptions ? '180deg' : '0',
-                                    }}
+                                        initial={{
+                                            rotate: '0'
+                                        }}
+                                        animate={{
+                                            rotate: visibleMoreOptions ? '180deg' : '0',
+                                        }}
 
-                                    transition={{
-                                        type : 'spring',
-                                        damping : '30',
-                                        stiffness  : '500'
-                                    }}
+                                        transition={{
+                                            type: 'spring',
+                                            damping: '30',
+                                            stiffness: '500'
+                                        }}
 
-                                    onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className='border text-xl p-2 rounded-full'>
+                                        onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className='border text-xl p-2 rounded-full'>
                                         <BsArrowDown />
                                     </motion.button>
 
@@ -125,13 +126,13 @@ const HomePage: React.FC = () => {
                                     }}
 
                                     transition={{
-                                        type : 'tween',
-                                        damping : '30',
-                                        stiffness  : '500'
+                                        type: 'tween',
+                                        damping: '30',
+                                        stiffness: '500'
                                     }}
 
                                     className={`w-full overflow-hidden`}>
-                                    <div className='bg-[#121212] w-full p-2 rounded-lg grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2'>
+                                    <div className='w-full p-2 rounded-lg grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2'>
 
                                         <div className="rounded-full bg-[#222222] p-2 flex items-center px-4">
                                             <input placeholder="Custome Domain" type={'text'} className={`bg-transparent outline-none h-7 w-full`} />
@@ -162,7 +163,7 @@ const HomePage: React.FC = () => {
 
                             <div className='flex gap-x-5'>
                                 {
-                                    <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='bg-[#45a0f5] text-white items-center flex justify-center text-2xl h-12 w-72 tracking-wide rounded-full hover:opacity-80 hover:border-4'>
+                                    <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[0.5px] border-primaryButton-0 text-white items-center flex justify-center text-xl h-12 w-72 tracking-wide rounded-full hover:bg-primaryButton-0 transition-all'>
                                         {
                                             loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? "Copied" : "Copy Link" : "Shorten URL"
                                         }
@@ -176,7 +177,7 @@ const HomePage: React.FC = () => {
                                 }
                             </div>
                         </div>
-                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-400'>the better</h1>
+                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>the better</h1>
                     </motion.div>
                 </div>
             </div>
