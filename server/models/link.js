@@ -13,7 +13,13 @@ const LinkSchema = mongoose.Schema({
         type: Boolean,
         default: true,
         required: true
+    },
+    expireAt: {
+        type: Date,
+        default: new Date("2028-08-10")
     }
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('Link', LinkSchema);
