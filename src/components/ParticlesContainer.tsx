@@ -1,9 +1,10 @@
 import { Particles } from 'react-tsparticles'
 import { loadFull } from 'tsparticles';
 import React, { useCallback } from 'react';
+import { Engine } from 'tsparticles-engine';
 
 const ParticlesContainer = () => {
-    const particlesInit = useCallback(async (engine) => {
+    const particlesInit = useCallback(async (engine : Engine) => {
         await loadFull(engine)
     }, [])
 
@@ -11,10 +12,10 @@ const ParticlesContainer = () => {
 
     return ( 
     <Particles
-        className='h-full w-full absolute translate-z-0'
+        className='h-full w-full absolute -z-5'
         id='tsparticles' init={particlesInit} loaded={particlesLoaded}
         options={{
-            fullScreen: { enable: false },
+            fullScreen: { enable: true },
             background: {
                 color: {
                     value: ''
@@ -59,7 +60,7 @@ const ParticlesContainer = () => {
                 },
                 move: {
                     direction: 'none',
-                    enable: 'true',
+                    enable: true,
                     outModes: {
                         default: 'bounce'
                     },

@@ -14,10 +14,13 @@ module.exports = {
         primaryButton : ['#45a0f5'],
       },
       backgroundImage : {
-        // site : 'url("./public/site-image2.jpg")',
+        site : 'url("./public/site-image2.jpg")',
       },
       borderColor : {
         primaryButton : ['#45a0f5'],
+      }, 
+      textColor : {
+        'primaryButton' : '#45a0f5',
       }
     },
   },

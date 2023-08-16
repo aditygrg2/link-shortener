@@ -29,7 +29,7 @@ const NavbarList: React.FC = () => {
             {
                 ulList.map((list, index) => {
                     return (
-                        <li key={index} className="w-full flex items-center justify-center whitespace-nowrap">
+                        <li key={index} className={`w-full flex text-gray-400 items-center justify-center whitespace-nowrap ${index === 0 && 'text-primaryButton'}`}>
                             <button className={``}>{list.listName}</button>
                         </li>
                     )
