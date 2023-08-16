@@ -1,8 +1,6 @@
 import React, {useRef, useState} from 'react';
 import NavBar from '../components/Navbar/NavBar';
 import ParticlesContainer from '../components/ParticlesContainer';
-import ShortenerTab from '../components/ShortenerTab/ShortenerTab';
-;
 import { BiHomeAlt2, BiLoaderAlt, BiLockAlt } from 'react-icons/bi';
 import { AiOutlineLoading, AiOutlinePlus } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
