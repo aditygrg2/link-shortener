@@ -5,9 +5,9 @@ import RegisterButton from "./RegisterButton";
 
 const LargeScreen : React.FC = () => {
     return (
-        <div className="hidden lg:flex lg:flex-row items-center justify-around m-8">
-            <Logo/>
+        <div className="hidden lg:flex lg:flex-row items-center justify-between m-4">
             <NavbarList/>
+            <Logo/>
             <RegisterButton/>
         </div>
     )

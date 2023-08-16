@@ -12,7 +12,10 @@ module.exports = {
       backgroundColor : {
         dark : ['#0f0f0f'],
         primaryButton : ['#45a0f5'],
-      }, 
+      },
+      backgroundImage : {
+        // site : 'url("./public/site-image2.jpg")',
+      },
       borderColor : {
         primaryButton : ['#45a0f5'],
       }
