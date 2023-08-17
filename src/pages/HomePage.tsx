@@ -1,25 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, } from 'react';
 import NavBar from '../components/Navbar/NavBar';
 import ParticlesContainer from '../components/ParticlesContainer';
 import { BiHomeAlt2, BiLoaderAlt, BiLockAlt } from 'react-icons/bi';
-import { AiOutlineLoading, AiOutlinePlus } from 'react-icons/ai';
-import { BsArrowDown, BsArrowUp, BsQrCode, BsThreeDotsVertical } from 'react-icons/bs';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { BsArrowDown, BsQrCode } from 'react-icons/bs';
 import axios from 'axios';
-import { urls } from "../constants/constant";
+import { languages, urls } from "../constants/constant";
 import { motion } from 'framer-motion';
 import { fadeIn } from '../constants/variants';
+import QRCodeModal from '../components/ShortenerTab/QRCodeModal';
 
 const HomePage: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const expiryTimeRef = useRef<HTMLInputElement>(null);
+    const languageSelectRef = useRef<HTMLSelectElement>(null);
+    const customURLRef = useRef<HTMLInputElement>(null);
+
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [shortenedLink, setShortenedLink] = useState("");
     const [linkCopied, setLinkCopied] = useState(false);
+    const [isQRCodeEnabled, setQRCodeEnabled] = useState(false);
 
     const [visibleMoreOptions, setVisibleMoreOptions] = useState(false);
 
-    const handleLinkSubmit = async (e: React.MouseEvent<HTMLElement>) => {
-        console.log("Asd");
+    const handleLinkSubmit = async () => {
         setLoading(true);
         let path;
         if (inputRef.current?.value) {
@@ -31,13 +36,17 @@ const HomePage: React.FC = () => {
         }
 
         try {
+            console.log(languageSelectRef.current?.value);
             const response = await axios.post(`${urls.SERVER_URL}/shorten`, {
                 path,
+                customURL: customURLRef.current?.value,
+                expiryTime: expiryTimeRef.current?.value,
+                languageSelected: languageSelectRef.current?.value
             })
 
             if (response.status >= 200 && response.status < 300) {
                 setLoading(false);
-                const url = urls.CLIENT_URL + '/' + response.data.newPath;
+                const url = urls.SERVER_URL + '/' + response.data.newPath;
                 setShortenedLink(url)
                 inputRef.current.value = url;
             }
@@ -88,7 +97,11 @@ const HomePage: React.FC = () => {
                                 {/* searching tab is going to be the same */}
                                 <div className="bg-[#222222] rounded-full px-2 py-2 space-x-2 w-full flex items-center">
                                     <BiLockAlt />
-                                    <input ref={inputRef} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full`} />
+                                    <input ref={inputRef} onKeyDown={(e) => {
+                                        if(e.key==="Enter"){
+                                            shortenedLink.length ? handleCopy() : handleLinkSubmit()
+                                        }
+                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full`} />
                                 </div>
                                 <div className="flex flex-row items-center space-x-2">
                                     <AiOutlinePlus className="text-xl" />
@@ -135,27 +148,36 @@ const HomePage: React.FC = () => {
                                     <div className='w-full p-2 rounded-lg grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2'>
 
                                         <div className="rounded-full bg-[#222222] p-2 flex items-center px-4">
-                                            <input placeholder="Custome Domain" type={'text'} className={`bg-transparent outline-none h-7 w-full`} />
+                                            <input ref={customURLRef} placeholder="Custom Domain" type={'text'} className={`bg-transparent outline-none h-7 w-full`} />
                                         </div>
 
                                         <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4 cursor-pointer'>
                                             <label htmlFor='date-and-time'>Expiry Time</label>
-                                            <input id='date-and-time' title="Date and Time" type={'datetime-local'} className={`bg-transparent outline-none`} />
+                                            <input ref={expiryTimeRef} id='date-and-time' title="Date and Time" type={'datetime-local'} className={`bg-transparent outline-none`} />
                                         </div>
 
                                         <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4'>
                                             <label htmlFor='translated'>Translate Webpage : {' '}</label>
-                                            <select id='translated' title='translated-lang' className='bg-transparent outline-none w-full'>
-                                                <option value={'English'}>Engling</option>
-                                                <option value={'Hindi'}>Hindi</option>
-                                                <option value={'Punjabi'}>Punjabi</option>
+                                            <select ref={languageSelectRef} id='translated' title='translated-lang' className='bg-transparent outline-none w-full'>
+                                                {languages.map(lang => {
+                                                    return <option value={lang}>{lang}</option>
+                                                })}
                                             </select>
                                         </div>
-
-                                        <button title='Generate QR code' className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4'>
-                                            <BsQrCode />
-                                            <span>Generate QR code</span>
-                                        </button>
+                                        
+                                        {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
+                                            <button title='Generate QR code' className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4' onClick={(e) => {
+                                                if(shortenedLink){
+                                                    setQRCodeEnabled(true);
+                                                }
+                                                else{
+                                                    // setError
+                                                }
+                                            }}>
+                                                <BsQrCode />
+                                                <span>Generate QR code</span>
+                                            </button>
+                                        }
 
                                     </div>
                                 </motion.div>

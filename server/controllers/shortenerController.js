@@ -1,3 +1,4 @@
+const { languages } = require('../constants/urls');
 const Link = require('../models/link');
 const randomstring = require('randomstring')
 
@@ -15,6 +16,14 @@ const manageExpiryDate = (expiryTime) => {
     return [seconds, today.getTime()];
 }
 
+const calculateGTLink = (languageCode, link) => {
+    console.log(link);
+    const modifiedLink = link.replaceAll('.', '-');
+    const additer = `.translate.goog/?gws_rd=ssl&_x_tr_sl=auto&_x_tr_tl=${languageCode}&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true`;
+
+    return modifiedLink + additer;
+}
+
 module.exports.shortenURL = async (req, res) => {
     const path = req.body.path;
 
@@ -27,8 +36,9 @@ module.exports.shortenURL = async (req, res) => {
     const customURL = req.body.customURL;
     const expiryDate = manageExpiryDate(req.body.expiryTime);
     console.log(expiryDate);
-    const languageSelected = req.body.languageSelected;
+    const languageCode = req.body.languageSelected ? languages[req.body.languageSelected] : "";
     let newPath = customURL ? customURL : randomstring.generate(6);
+    console.log(languageCode);
 
     try{
         let check = await Link.find({shortenedURL: newPath});
@@ -51,9 +61,7 @@ module.exports.shortenURL = async (req, res) => {
             const newLink = await new Link({
                 link: path,
                 shortenedURL: newPath,
-                languageSelected,
-                createdAt: expiryDate[1],
-                expireAt: expiryDate ? expiryDate : new Date("2028-08-10")
+                languageCode,
             });
         
             await newLink.save();
@@ -80,7 +88,13 @@ module.exports.handleLink = async (req, res) => {
                 url.link = 'https://' + url.link;
             }
 
-            return res.redirect(url.link);
+            if(!url.languageCode){
+                return res.redirect(url.link);
+            }
+
+            console.log(calculateGTLink(url.languageCode, url.link));
+
+            return res.redirect(calculateGTLink(url.languageCode, url.link));
         }
         else{
             return res.send("<div>Requested URL not found on our server</div>");
