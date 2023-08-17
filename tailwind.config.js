@@ -8,6 +8,7 @@ module.exports = {
       fontFamily : {
         poppins : ['Poppins' ,'sans-serif'], 
         quicksand : ['Quicksand','sans-serif'],
+        grotesque : ['Bricolage Grotesque', 'sans-serif'],
       },
       backgroundColor : {
         dark : ['#0f0f0f'],

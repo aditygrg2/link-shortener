@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
                         <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-500'>urls</h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>when </h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-white'>the shorter,</h1>
-                        <div className='w-full lg:w-[60%] flex flex-col space-y-2'>
+                        <div className='w-full lg:w-[45%] flex flex-col space-y-2'>
                             <div className={`flex items-center space-x-2 bg-[#121212] px-2.5 py-1.5 rounded-full`}>
                                 <div className="">
                                     <BiHomeAlt2 className="text-xl" />
@@ -104,8 +104,9 @@ const HomePage: React.FC = () => {
                                     }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full`} />
                                 </div>
                                 <div className="flex flex-row items-center space-x-2">
-                                    <AiOutlinePlus className="text-xl" />
-                                    <span className="h-6 aspect-square rounded-md border-2 text-xs flex items-center justify-center">2</span>
+                                    
+                                    <AiOutlinePlus className="text-xl hidden md:block" />
+                                    <span className="h-6 aspect-square rounded-md border-2 text-xs items-center justify-center hidden md:flex">2</span>
 
                                     <motion.button
                                         initial={{

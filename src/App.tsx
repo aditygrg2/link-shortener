@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <AnimatePresence mode='wait'>
-        <div className='h-screen w-screen overflow-hidden bg-black'>
+        <div className='h-screen w-screen overflow-hidden bg-black font-grotesque'>
           <DrawerNav />
           <HomePage />
         </div>
