@@ -15,5 +15,5 @@
 }
 
 .bg-shadow {
-    box-shadow: 0 -25px 400px rgb(255, 163, 77), 0 0 5px rgb(255, 124, 0);
+    box-shadow: 0 0 10px rgb(255, 163, 77), 0 0 2px rgb(255, 124, 0), inset 0px 0 5px rgb(255, 163, 77);
 }

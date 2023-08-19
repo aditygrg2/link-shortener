@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
                         className='flex flex-col space-y-2'>
                         <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-500'>urls</h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>when </h1>
-                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-white'>the shorter,</h1>
+                        <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-100'>the shorter,</h1>
 
                         <div className='w-full lg:w-[45%] flex flex-col space-y-2'>
 
