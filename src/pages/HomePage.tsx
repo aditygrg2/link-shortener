@@ -1,7 +1,7 @@
 import React, { useRef, useState, } from 'react';
 import NavBar from '../components/Navbar/NavBar';
 import ParticlesContainer from '../components/ParticlesContainer';
-import { BiHomeAlt2, BiLoaderAlt, BiLockAlt } from 'react-icons/bi';
+import { BiCheck, BiCopyAlt, BiHomeAlt2, BiLink, BiLoaderAlt, BiLockAlt, BiPlug, BiPlus } from 'react-icons/bi';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsArrowDown, BsQrCode } from 'react-icons/bs';
 import axios from 'axios';
@@ -77,37 +77,56 @@ const HomePage: React.FC = () => {
     }
 
     return (
-        <div className={`h-full w-full overflow-x-hidden relative`}>
+        <div className={`h-full w-full overflow-x-hidden relative background`}>
             <NavBar />
+
+            <div className='h-full w-full absolute top-0 left-0 bg-gradient-to-r from-black/80 via-black/60 to-black/0 -z-2'></div>
+
             <div className='w-full mt-10 p-4 lg:p-12 flex items-center justify-center relative'>
                 <ParticlesContainer />
 
                 <div className='w-full text-white z-10'>
                     <motion.div
+
                         variants={fadeIn('right', 0.5)} initial='hidden' animate="show" exit='hidden'
                         className='flex flex-col space-y-2'>
                         <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-500'>urls</h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>when </h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-white'>the shorter,</h1>
+
                         <div className='w-full lg:w-[45%] flex flex-col space-y-2'>
-                            <div className={`flex items-center space-x-2 bg-[#121212] px-2.5 py-1.5 rounded-full`}>
-                                <div className="">
-                                    <BiHomeAlt2 className="text-xl" />
-                                </div>
+
+                            <div className={`flex items-center space-x-2 border border-primaryButton-0 p-2 rounded-md bg-shadow`}>
+
                                 {/* searching tab is going to be the same */}
-                                <div className="bg-[#222222] rounded-full px-2 py-2 space-x-2 w-full flex items-center">
-                                    <BiLockAlt />
+                                <div className="bg-transparent rounded-md px-2 py-2 space-x-2 w-full flex items-center">
+
+                                    <button>
+                                        <BiPlus className='text-xl'/>
+                                    </button>
+
                                     <input ref={inputRef} onKeyDown={(e) => {
-                                        if(e.key==="Enter"){
+                                        if (e.key === "Enter") {
                                             shortenedLink.length ? handleCopy() : handleLinkSubmit()
                                         }
-                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full`} />
-                                </div>
-                                <div className="flex flex-row items-center space-x-2">
-                                    
-                                    <AiOutlinePlus className="text-xl hidden md:block" />
-                                    <span className="h-6 aspect-square rounded-md border-2 text-xs items-center justify-center hidden md:flex">2</span>
+                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full placeholder:text-white`} />
 
+                                    {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
+
+                                        <button title='Generate QR code' className={`p-2  flex items-center justify-start rounded-md aspect-square ${ !shortenedLink.length ? 'text-gray-300' : 'text-white'}`} disabled={ !shortenedLink.length ? true : false } onClick={(e) => {
+                                            if (shortenedLink) {
+                                                setQRCodeEnabled(true);
+                                            }
+                                            else {
+                                                // setError
+                                            }
+                                        }}>
+                                            <BsQrCode />
+                                        </button>
+                                    }
+                                </div>
+
+                                <div className="flex flex-row items-center space-x-2">
                                     <motion.button
                                         initial={{
                                             rotate: '0'
@@ -125,8 +144,14 @@ const HomePage: React.FC = () => {
                                         onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className='border text-xl p-2 rounded-full'>
                                         <BsArrowDown />
                                     </motion.button>
-
                                 </div>
+
+                                <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[1px] text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-full hover:bg-primaryButton-0 transition-all'>
+                                    {
+                                        loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? <BiCheck className='text-green-300 text-2xl'/> : <BiCopyAlt /> : <BiLink />
+                                    }
+                                </button>
+
                             </div>
 
                             {/* more features */}
@@ -165,32 +190,13 @@ const HomePage: React.FC = () => {
                                                 })}
                                             </select>
                                         </div>
-                                        
-                                        {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
-                                            <button title='Generate QR code' className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4' onClick={(e) => {
-                                                if(shortenedLink){
-                                                    setQRCodeEnabled(true);
-                                                }
-                                                else{
-                                                    // setError
-                                                }
-                                            }}>
-                                                <BsQrCode />
-                                                <span>Generate QR code</span>
-                                            </button>
-                                        }
 
                                     </div>
                                 </motion.div>
                             }
 
-                            <div className='flex gap-x-5'>
+                            {/* <div className='flex gap-x-5'>
                                 {
-                                    <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[0.5px] border-primaryButton-0 text-white items-center flex justify-center text-xl h-12 w-72 tracking-wide rounded-full hover:bg-primaryButton-0 transition-all'>
-                                        {
-                                            loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? "Copied" : "Copy Link" : "Shorten URL"
-                                        }
-                                    </button>
                                 }
                                 {
                                     shortenedLink.length ?
@@ -198,7 +204,9 @@ const HomePage: React.FC = () => {
                                             Create Another
                                         </button> : ""
                                 }
-                            </div>
+                            </div> */}
+
+
                         </div>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>the better</h1>
                     </motion.div>
