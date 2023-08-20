@@ -5,6 +5,8 @@ import store from './store/store';
 import DrawerNav from './components/Navbar/DrawerNav';
 import { AnimatePresence } from 'framer-motion';
 import ParticlesContainer from './components/ParticlesContainer';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
       <AnimatePresence mode='wait'>
         <div className='h-screen w-screen overflow-hidden bg-black font-grotesque'>
           <DrawerNav />
+          <Login/>
+          <SignUp/>
           <HomePage />
         </div>
       </AnimatePresence>
