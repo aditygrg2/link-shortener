@@ -8,7 +8,7 @@ import axios from 'axios';
 import { languages, urls } from "../constants/constant";
 import { motion } from 'framer-motion';
 import { fadeIn } from '../constants/variants';
-import QRCodeModal from '../components/ShortenerTab/QRCodeModal';
+import QRCodeModal from '../components/Modals/QRCodeModal';
 
 const HomePage: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);

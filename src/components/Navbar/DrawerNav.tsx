@@ -1,8 +1,7 @@
 import React from 'react'
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import NavbarList from "./NavBarList";
 import RegisterButton from "./RegisterButton";
-import { useState } from "react";
 import { RxArrowRight, RxHamburgerMenu } from 'react-icons/rx';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDrawer } from '../../store/Slice/DrawerNavSlice'
