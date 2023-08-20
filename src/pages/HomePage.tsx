@@ -3,7 +3,7 @@ import NavBar from '../components/Navbar/NavBar';
 import ParticlesContainer from '../components/ParticlesContainer';
 import { BiCheck, BiCopyAlt, BiHomeAlt2, BiLink, BiLoaderAlt, BiLockAlt, BiPlug, BiPlus } from 'react-icons/bi';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { BsArrowDown, BsQrCode } from 'react-icons/bs';
+import { BsArrowDown, BsQrCode, BsX } from 'react-icons/bs';
 import axios from 'axios';
 import { languages, urls } from "../constants/constant";
 import { motion } from 'framer-motion';
@@ -102,31 +102,7 @@ const HomePage: React.FC = () => {
                                 <div className="bg-transparent rounded-md px-2 py-2 space-x-2 w-full flex items-center">
 
                                     <button>
-                                        <BiPlus className='text-xl'/>
-                                    </button>
-
-                                    <input ref={inputRef} onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            shortenedLink.length ? handleCopy() : handleLinkSubmit()
-                                        }
-                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full placeholder:text-white`} />
-
-                                    {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
-
-                                        <button title='Generate QR code' className={`p-2  flex items-center justify-start rounded-md aspect-square ${ !shortenedLink.length ? 'text-gray-300' : 'text-white'}`} disabled={ !shortenedLink.length ? true : false } onClick={(e) => {
-                                            if (shortenedLink) {
-                                                setQRCodeEnabled(true);
-                                            }
-                                            else {
-                                                // setError
-                                            }
-                                        }}>
-                                            <BsQrCode />
-                                        </button>
-                                    }
-                                </div>
-
-                                <div className="flex flex-row items-center space-x-2">
+                                    <div className="flex flex-row items-center space-x-2">
                                     <motion.button
                                         initial={{
                                             rotate: '0'
@@ -145,6 +121,32 @@ const HomePage: React.FC = () => {
                                         <BsArrowDown />
                                     </motion.button>
                                 </div>
+                                    </button>
+
+                                    <input ref={inputRef} onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            shortenedLink.length ? handleCopy() : handleLinkSubmit()
+                                        }
+                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full placeholder:text-white`} />
+
+                                    {shortenedLink.length > 0 && <BsX className='text-4xl text-primaryButton' onClick={handleAnotherLink}></BsX>}
+
+                                    {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
+
+                                        <button title='Generate QR code' className={`p-2  flex items-center justify-start rounded-md aspect-square ${ !shortenedLink.length ? 'text-gray-300' : 'text-white'}`} disabled={ !shortenedLink.length ? true : false } onClick={(e) => {
+                                            if (shortenedLink) {
+                                                setQRCodeEnabled(true);
+                                            }
+                                            else {
+                                                // setError
+                                            }
+                                        }}>
+                                            <BsQrCode />
+                                        </button>
+                                    }
+                                </div>
+
+                    
 
                                 <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[1px] text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-full hover:bg-primaryButton-0 transition-all'>
                                     {
