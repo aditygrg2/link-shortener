@@ -14,6 +14,34 @@
     background: radial-gradient(circle at -8.9% 51.2%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
 }
 
+.background-login{
+    background: radial-gradient(circle at 110% -10%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
+}
+
+.background-signup{
+    background: radial-gradient(circle at -10% -10%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
+}
+
 .bg-shadow {
     box-shadow: 0 0 10px rgb(255, 163, 77), 0 0 2px rgb(255, 124, 0), inset 0px 0 5px rgb(255, 163, 77);
+}
+
+.animate-loader{
+    animation: changePage 400ms linear ease-in forwards;
+}
+
+@keyframes changePage {
+    0%{
+        width: 0%;
+    }
+    50%{
+        width: 100%;
+    }
+    100%{
+        width: 0%;
+    }
+}
+
+.scrollbar-hidden::-webkit-scrollbar{
+    display: none;
 }
