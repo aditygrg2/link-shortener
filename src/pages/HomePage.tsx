@@ -181,7 +181,7 @@ const HomePage: React.FC = () => {
 
                                         <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4 cursor-pointer'>
                                             <label htmlFor='date-and-time'>Expiry Time</label>
-                                            <input ref={expiryTimeRef} id='date-and-time' title="Date and Time" type={'datetime-local'} className={`bg-transparent outline-none`} />
+                                            <input ref={expiryTimeRef} id='date-and-time' title="Date and Time" type={'datetime-local'} min={new Date().toISOString()} className={`bg-transparent outline-none`} />
                                         </div>
 
                                         <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4'>
