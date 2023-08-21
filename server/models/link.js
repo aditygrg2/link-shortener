@@ -15,8 +15,7 @@ const LinkSchema = mongoose.Schema({
         required: true
     },
     expireAt: {
-        type: Date,
-        default: new Date("2028-08-10")
+        type: Number,
     },
     languageCode:{
         type: String, 
