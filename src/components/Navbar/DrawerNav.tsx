@@ -44,7 +44,6 @@ const DrawerNav: React.FC = () => {
                             </div>
 
                             <NavbarList />
-                            <RegisterButton />
                         </div>
                     </motion.div>
                 )

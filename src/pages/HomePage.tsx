@@ -117,7 +117,7 @@ const HomePage: React.FC = () => {
                                             stiffness: '500'
                                         }}
 
-                                        onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className='border text-xl p-2 rounded-full'>
+                                        onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className=' text-gray-300 text-xl p-2 rounded-md'>
                                         <BsArrowDown />
                                     </motion.button>
                                 </div>
@@ -148,7 +148,7 @@ const HomePage: React.FC = () => {
 
                     
 
-                                <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[1px] text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-full hover:bg-primaryButton-0 transition-all'>
+                                <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[1px] border-primaryButton-0 text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-md bg-shadow hover:bg-primaryButton-0 transition-all'>
                                     {
                                         loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? <BiCheck className='text-green-300 text-2xl'/> : <BiCopyAlt /> : <BiLink />
                                     }
