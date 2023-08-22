@@ -3,6 +3,7 @@ const Link = require('../models/link');
 const randomstring = require('randomstring');
 const { calculateGTLink, manageExpiryDate } = require('../utils/main');
 const {CLIENT_URL} = require('../constants/urls');
+
 module.exports.shortenURL = async (req, res) => {
     const path = req.body.path;
 

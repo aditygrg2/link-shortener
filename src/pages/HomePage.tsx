@@ -77,19 +77,18 @@ const HomePage: React.FC = () => {
     }
 
     return (
-        <div className={`h-full w-full overflow-x-hidden relative background`}>
-            <NavBar />
+        <div className={`h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden relative`}>
+            
+            <div className='w-full  px-4 lg:px-4 relative z-20'>   
 
-            <div className='h-full w-full absolute top-0 left-0 bg-gradient-to-r from-black/80 via-black/60 to-black/0 -z-2'></div>
+            <ParticlesContainer />
 
-            <div className='w-full mt-10 p-4 lg:p-12 flex items-center justify-center relative'>
-                <ParticlesContainer />
+                <div className='w-full text-white overflow-x-hidden overflow-y-scroll mt-10 lg:mt-16 pb-24 scrollbar-hidden'>
 
-                <div className='w-full text-white z-10'>
                     <motion.div
-
                         variants={fadeIn('right', 0.5)} initial='hidden' animate="show" exit='hidden'
                         className='flex flex-col space-y-2'>
+
                         <h1 className='text-2xl md:text-4xl lg:text-5xl text-gray-500'>urls</h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>when </h1>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-100'>the shorter,</h1>
@@ -102,38 +101,38 @@ const HomePage: React.FC = () => {
                                 <div className="bg-transparent rounded-md px-2 py-2 space-x-2 w-full flex items-center">
 
                                     <button>
-                                    <div className="flex flex-row items-center space-x-2">
-                                    <motion.button
-                                        initial={{
-                                            rotate: '0'
-                                        }}
-                                        animate={{
-                                            rotate: visibleMoreOptions ? '180deg' : '0',
-                                        }}
+                                        <div className="flex flex-row items-center space-x-2">
+                                            <motion.button
+                                                initial={{
+                                                    rotate: '0'
+                                                }}
+                                                animate={{
+                                                    rotate: visibleMoreOptions ? '180deg' : '0',
+                                                }}
 
-                                        transition={{
-                                            type: 'spring',
-                                            damping: '30',
-                                            stiffness: '500'
-                                        }}
+                                                transition={{
+                                                    type: 'spring',
+                                                    damping: '30',
+                                                    stiffness: '500'
+                                                }}
 
-                                        onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className=' text-gray-300 text-xl p-2 rounded-md'>
-                                        <BsArrowDown />
-                                    </motion.button>
-                                </div>
+                                                onClick={() => { setVisibleMoreOptions(prev => !prev) }} title='More feature' className=' text-gray-300 text-xl p-2 rounded-md'>
+                                                <BsArrowDown />
+                                            </motion.button>
+                                        </div>
                                     </button>
 
                                     <input ref={inputRef} onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             shortenedLink.length ? handleCopy() : handleLinkSubmit()
                                         }
-                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full placeholder:text-white`} />
+                                    }} placeholder="https://urls.cc/shots/" type={'text'} autoFocus className={`bg-transparent outline-none h-8 w-full placeholder:text-gray-400`} />
 
                                     {shortenedLink.length > 0 && <BsX className='text-4xl text-primaryButton' onClick={handleAnotherLink}></BsX>}
 
                                     {isQRCodeEnabled ? <QRCodeModal link={shortenedLink} toggleModal={setQRCodeEnabled}></QRCodeModal> :
 
-                                        <button title='Generate QR code' className={`p-2  flex items-center justify-start rounded-md aspect-square ${ !shortenedLink.length ? 'text-gray-300' : 'text-white'}`} disabled={ !shortenedLink.length ? true : false } onClick={(e) => {
+                                        <button title='Generate QR code' className={`p-2  flex items-center justify-start rounded-md aspect-square ${!shortenedLink.length ? 'text-gray-300' : 'text-white'}`} disabled={!shortenedLink.length ? true : false} onClick={(e) => {
                                             if (shortenedLink) {
                                                 setQRCodeEnabled(true);
                                             }
@@ -146,11 +145,11 @@ const HomePage: React.FC = () => {
                                     }
                                 </div>
 
-                    
+
 
                                 <button onClick={shortenedLink.length ? handleCopy : handleLinkSubmit} title='Get Your link' className='border-[1px] border-primaryButton-0 text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-md bg-shadow hover:bg-primaryButton-0 transition-all'>
                                     {
-                                        loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? <BiCheck className='text-green-300 text-2xl'/> : <BiCopyAlt /> : <BiLink />
+                                        loading ? <BiLoaderAlt className='animate-spin' /> : shortenedLink.length ? linkCopied ? <BiCheck className='text-green-300 text-2xl' /> : <BiCopyAlt /> : <BiLink />
                                     }
                                 </button>
 
@@ -160,32 +159,34 @@ const HomePage: React.FC = () => {
                             {
                                 <motion.div
                                     initial={{
-                                        height: 0
+                                        height: 0, 
+                                        opacity : 0,
                                     }}
                                     animate={{
+                                        opacity : 1, 
                                         height: visibleMoreOptions ? 'auto' : '0',
                                     }}
 
                                     transition={{
-                                        type: 'tween',
-                                        damping: '30',
+                                        type: 'spring',
+                                        damping: '20',
                                         stiffness: '500'
                                     }}
 
-                                    className={`w-full overflow-hidden`}>
-                                    <div className='w-full p-2 rounded-lg grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2'>
+                                    className={`w-full border-b border-b-primaryButton-0 backdrop-blur-lg bg-[#121212]/40 rounded-lg overflow-hidden`}>
 
-                                        <div className="rounded-full bg-[#222222] p-2 flex items-center px-4">
-                                            <input ref={customURLRef} placeholder="Custom Domain" type={'text'} className={`bg-transparent outline-none h-7 w-full`} />
+                                    <div className='w-full p-2 grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2 text-sm'>
+
+                                        <div className="bg-[#222222] rounded-md p-2 flex items-center px-4 hover:bg-green-500">
+                                            <input ref={customURLRef} placeholder="Custom Domain" type={'text'} className={`bg-transparent outline-none w-full`} />
                                         </div>
 
-                                        <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-start whitespace-nowrap space-x-2 w-full px-4 cursor-pointer'>
-                                            <label htmlFor='date-and-time'>Expiry Time</label>
-                                            <input ref={expiryTimeRef} id='date-and-time' title="Date and Time" type={'datetime-local'} min={new Date().toISOString()} className={`bg-transparent outline-none`} />
+                                        <div className='bg-[#222222] rounded-md p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4 cursor-pointer'>
+                                            <label htmlFor='date-and-time'>Expires</label>
+                                            <input ref={expiryTimeRef} id='date-and-time' title="Date and Time" type={'datetime-local'} min={new Date().toISOString()} className={`bg-transparent outline-none placeholder:text-xs`} />
                                         </div>
 
-                                        <div className='bg-[#222222] rounded-full p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4'>
-                                            <label htmlFor='translated'>Translate Webpage : {' '}</label>
+                                        <div className='bg-[#222222] rounded-md p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4'>
                                             <select ref={languageSelectRef} id='translated' title='translated-lang' className='bg-transparent outline-none w-full'>
                                                 {languages.map(lang => {
                                                     return <option value={lang}>{lang}</option>
@@ -197,21 +198,10 @@ const HomePage: React.FC = () => {
                                 </motion.div>
                             }
 
-                            {/* <div className='flex gap-x-5'>
-                                {
-                                }
-                                {
-                                    shortenedLink.length ?
-                                        <button onClick={handleAnotherLink} title='create_another' className='bg-[#45a0f5] text-white items-center flex justify-center text-2xl h-12 w-72 tracking-wide rounded-full hover:opacity-80 hover:border-4'>
-                                            Create Another
-                                        </button> : ""
-                                }
-                            </div> */}
-
-
                         </div>
                         <h1 className='text-5xl md:text-6xl lg:text-7xl text-gray-500'>the better</h1>
                     </motion.div>
+
                 </div>
             </div>
         </div>

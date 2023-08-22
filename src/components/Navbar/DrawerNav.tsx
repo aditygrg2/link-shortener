@@ -33,7 +33,7 @@ const DrawerNav: React.FC = () => {
                             stiffness: '500',
                             damping: '30'
                         }}
-                        className="h-full w-full flex flex-col items-end bg-black/10 backdrop-filter backdrop-blur-md absolute top-0 right-0 overflow-hidden z-[100]">
+                        className="h-full w-full flex flex-col items-end bg-black/10 backdrop-filter backdrop-blur-md absolute top-0 right-0 overflow-hidden z-40">
 
                         <div className="w-full h-full flex flex-col justify-between py-4 px-2 relative overflow-x-hidden overflow-y-scroll">
 
