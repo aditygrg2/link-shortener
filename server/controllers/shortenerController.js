@@ -65,8 +65,6 @@ module.exports.handleLink = async (req, res) => {
                 url.link = 'https://' + url.link;
             }
 
-            console.log(url.expireAt, new Date().getTime(), "here")
-
             if(url.expireAt < new Date().getTime()){
                 // TODO: Need a cute page here!
                return res.status(200).redirect(CLIENT_URL + '/expired');

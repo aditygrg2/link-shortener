@@ -9,7 +9,6 @@ module.exports.manageExpiryDate = (expiryTime) => {
 }
 
 module.exports.calculateGTLink = (languageCode, link) => {
-    console.log(link);
     const modifiedLink = link.replaceAll('.', '-');
     const additer = `.translate.goog/?gws_rd=ssl&_x_tr_sl=auto&_x_tr_tl=${languageCode}&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true`;
 
