@@ -6,6 +6,7 @@ import { RxArrowRight } from 'react-icons/rx';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleLogin } from "../../store/Slice/LoginSlice";
 import { BsGoogle } from "react-icons/bs";
+import {urls} from '../../constants/constant';
 
 interface stateObj {
     isLoginOpen: boolean,
@@ -28,6 +29,10 @@ const Register: React.FC = () => {
             setLoginPage(prev => !prev);
         }, 400)
 
+    }
+
+    const handleGoogleAuth = () => {
+        
     }
 
 
@@ -62,9 +67,11 @@ const Register: React.FC = () => {
                             </h1>
 
                             <div className="flex items-center justify-center space-x-4">
-                                <button title="Sign up with Google" className="bg-primaryButton-0 bg-shadow p-4 rounded-md hover:bg-transparent transition-all duration-200">
-                                    <BsGoogle className="text-3xl" />
-                                </button>
+                                <a href={`${urls.SERVER_URL}` + '/auth/google'}>
+                                    <button title="Sign up with Google" className="bg-primaryButton-0 bg-shadow p-4 rounded-md hover:bg-transparent transition-all duration-200">
+                                        <BsGoogle className="text-3xl"  />
+                                    </button>
+                                </a>
                             </div>
 
                             <div className="flex items-center justify-center w-full space-x-4">

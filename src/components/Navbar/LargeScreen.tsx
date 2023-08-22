@@ -2,13 +2,19 @@ import React from "react";
 import Logo from "./Logo";
 import NavbarList from "./NavBarList";
 import RegisterButton from "./RegisterButton";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 
 const LargeScreen : React.FC = () => {
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user);
+
+    console.log(user);
+    
     return (
         <div className="hidden lg:flex lg:flex-row items-center justify-between m-4">
             <NavbarList/>
             <Logo/>
-            <RegisterButton/>
+            {!user.registered ? <RegisterButton/> : <div>Logged In</div>}
         </div>
     )
 }

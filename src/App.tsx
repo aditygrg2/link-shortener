@@ -1,33 +1,49 @@
-import React from 'react'
-import HomePage from './pages/HomePage'
-import { Provider, useSelector } from 'react-redux';
-import store from './store/store';
-import DrawerNav from './components/Navbar/DrawerNav';
-import { AnimatePresence } from 'framer-motion';
-import ParticlesContainer from './components/ParticlesContainer';
-import { Route, Routes } from 'react-router-dom';
-import LinkExpired from './pages/LinkExpired';
-import Register from './components/Register/Register';
+import React, { useEffect, useState } from "react";
+import HomePage from "./pages/HomePage";
+import { AnimatePresence } from "framer-motion";
+import { Route, Routes } from "react-router-dom";
+import LinkExpired from "./pages/LinkExpired";
+import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
+import axios from "axios";
+import { urls } from "./constants/constant";
+import { userActions } from "./store/Slice/UserSlice";
+import MainPage from "./pages/MainPage";
+import Loaders from "./components/Extras/Loaders";
 
-const App : React.FC = () => {
+const App: React.FC = () => {
+  const isLoggedIn = useAppSelector((state) => state.user.registered);
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <Provider store={store}>
-      <AnimatePresence mode='wait'>
+  useEffect(() => {
+    const checkRegistered = async () => {
+      const response = await axios.get(`${urls.SERVER_URL}/auth/checkAuth`, {
+        withCredentials: true,
+      });
+
+      console.log(response);
+
+      if (response) {
+        const status = response.data.registered;
+        if (status) {
+          dispatch(userActions.setUser(response.data));
+        }
+      }
+      setLoading(false);
+    };
+    checkRegistered();
+  }, []);
+
+  return loading ? (
+    <Loaders />
+  ) : (
+    <AnimatePresence mode="wait">
       <Routes>
-        <Route path="/" element={
-        <div className='h-screen w-screen overflow-hidden bg-black font-grotesque'>
-            <DrawerNav />
-          <Register/>
-          <HomePage />
-          </div>
-        }>  
-        </Route>
-        <Route path="/expired" element={<LinkExpired></LinkExpired>}/>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/expired" element={<LinkExpired />} />
       </Routes>
-      </AnimatePresence>
-    </Provider>
-  )
-}
+    </AnimatePresence>
+  );
+};
 
 export default App;

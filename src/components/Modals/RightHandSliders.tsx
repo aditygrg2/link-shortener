@@ -7,10 +7,6 @@ type RightHandSliderProps = {
     toggleModal: Dispatch<SetStateAction<boolean>>;
 }
 
-
-
-
-
 export default function RightHandSlider(props: RightHandSliderProps) {
     return (
         <>
