@@ -24,6 +24,7 @@ passport.use(
           const user = await User.create({
             email: email,
             password: uuid(),
+            name: profile.displayName
           });
 
           user.save();

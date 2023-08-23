@@ -1,7 +1,9 @@
 const passport = require('passport');
+const User = require('../models/User');
+const { CLIENT_URL } = require('../constants/urls');
 
 const successRedirector = (req, res) => {
-    return res.redirect('http://localhost:3000');
+    return res.redirect(`${CLIENT_URL}`);
 }
 
 const authenticationDataHandler = (req, res) => {
@@ -20,4 +22,51 @@ const authenticationDataHandler = (req, res) => {
     })
 }
 
-module.exports = {successRedirector, authenticationDataHandler};
+const checkUser = async (req, res) => {
+    const email = req.body.email;
+    try{
+        const user = await User.findOne({email});
+
+        if(user){
+            return res.status(200).json({
+                status: true,
+                userName: user.name
+            })
+        }
+        
+        return res.status(200).json({
+            status: false,
+            userName: ''
+        })
+    }
+    catch(err){
+        // send this
+        console.log(err);
+    }
+}
+
+const createUser = async (req, res, done) => {
+    try{
+        // Though for a normal user this is already checked once. But this check is still again done.
+        const user = await User.findOne({email:req.body.email});
+    
+        if(!user){
+            const user = await new User(req.body);
+            user.save();
+            req.body = {
+                email: user.email,
+                password: user.password,
+            }
+            console.log(req.body);
+            return done(null, user);
+        }
+    }
+    catch(err){
+        // send err
+        console.log(err);
+    }
+
+    return done(null, null);
+}
+
+module.exports = {successRedirector, authenticationDataHandler, checkUser, createUser};

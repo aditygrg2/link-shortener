@@ -1,6 +1,5 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const Login = require("../controllers/Login.Controller");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
@@ -10,12 +9,14 @@ passport.use(
       passReqToCallback: true,
       usernameField: "email",
     },
-    async function (req, email, password, done) {
+    async function (req, _, _, done) {
+
       try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email: req.body.email });
 
         if (user && user.password) {
-          const verified = bcrypt.compareSync(password, user.password);
+          // const verified = bcrypt.compareSync(password, user.password);
+          const verified = user.password === req.body.password;
 
           if (verified) {
             return done(null, user);
@@ -26,7 +27,8 @@ passport.use(
           return done(null, false);
         }
       } catch (err) {
-        return done(err);
+        console.log(err);
+        return done(err, false);
       }
     }
   )
@@ -38,7 +40,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   await User.findById(id)
-    .select("-password")
     .then((user) => {
       return done(null, user);
     })
@@ -48,6 +49,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 passport.setAuthenticatedUser = function (req, res, next) {
+  console.log("n");
   if (req.isAuthenticated()) {
     res.locals.user = req.user;
   }

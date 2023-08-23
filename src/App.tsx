@@ -9,6 +9,7 @@ import { urls } from "./constants/constant";
 import { userActions } from "./store/Slice/UserSlice";
 import MainPage from "./pages/MainPage";
 import Loaders from "./components/Extras/Loaders";
+import { AuthRoutes } from "./constants/routes";
 
 const App: React.FC = () => {
   const isLoggedIn = useAppSelector((state) => state.user.registered);
@@ -17,7 +18,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkRegistered = async () => {
-      const response = await axios.get(`${urls.SERVER_URL}/auth/checkAuth`, {
+      const response = await axios.get(AuthRoutes.checkAuth, {
         withCredentials: true,
       });
 
@@ -26,13 +27,15 @@ const App: React.FC = () => {
       if (response) {
         const status = response.data.registered;
         if (status) {
+          console.log(status);
+          
           dispatch(userActions.setUser(response.data));
         }
       }
       setLoading(false);
     };
     checkRegistered();
-  }, []);
+  }, [isLoggedIn]);
 
   return loading ? (
     <Loaders />

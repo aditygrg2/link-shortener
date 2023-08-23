@@ -1,5 +1,5 @@
 const { languages } = require('../constants/urls');
-const Link = require('../models/link');
+const Link = require('../models/Link');
 const randomstring = require('randomstring');
 const { calculateGTLink, manageExpiryDate } = require('../utils/main');
 const {CLIENT_URL} = require('../constants/urls');

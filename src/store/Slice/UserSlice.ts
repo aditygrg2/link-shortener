@@ -10,23 +10,27 @@ const UserSlice = createSlice({
     },
     reducers: {
         setUser(state, action){
-            console.log(action);
-            
-            if(!action.payload.userData){
-                state.email = '';
-                state.name = '';
-                state.registered = false;
+            if(!action.payload.registered){
+                state = {
+                    email: '',
+                    name: '',
+                    registered: false,
+                }
                 return;
             }
 
-            state.email = action.payload.userData.email;
-            state.name = action.payload.userData.name;
-            state.registered = action.payload.registered;
+            return state = {
+                email: action.payload.userData.email,
+                name: action.payload.userData.name,
+                registered: action.payload.registered
+            }            
         },
         logoutUser(state, action){
-            state.email = '';
-            state.name = '';
-            state.registered = false;
+            return state = {
+                email: '',
+                name: '',
+                registered: false
+            }
         }
     }
 })

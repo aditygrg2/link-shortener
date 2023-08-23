@@ -13,6 +13,7 @@ const passportGoogleAuth = require('passport-google-oauth');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const { setResponse, setAuthenticatedUser } = require('./middlewares');
+const LocalStrategy = require("passport-local").Strategy;
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -20,8 +21,8 @@ app.use(bodyParser.json());
 
 app.use(cors(
     {
-        origin: '*',
-        credentials: true
+        origin: `${CLIENT_URL}`,
+        credentials: true,
     }
 ));
 
@@ -49,9 +50,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+require('./config/passport-local-strategy');
+
 app.use('/', setResponse, setAuthenticatedUser, require('./routes'));
 
 const PORT = 8000;
 app.listen(PORT, ()=>{
-    console.log("Server running on port", PORT)
+    console.log("Server running on port", PORT);
 })

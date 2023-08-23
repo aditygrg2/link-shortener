@@ -5,7 +5,6 @@ import RegisterButton from "./RegisterButton";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 
 const LargeScreen : React.FC = () => {
-    const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
 
     console.log(user);
