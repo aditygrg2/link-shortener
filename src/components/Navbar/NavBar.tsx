@@ -4,7 +4,7 @@ import SmallScreen from "./SmallScreen";
 
 export default function NavBar(){
     return (
-        <div className="text-white bg-transparent h-auto w-full overflow-hidden sticky top-0 z-40">
+        <div className="text-white bg-transparent h-auto w-full overflow-hidden sticky top-0 z-40 backdrop-blur-sm">
             <SmallScreen/>
             <LargeScreen />
         </div>
