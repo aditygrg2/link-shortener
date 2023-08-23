@@ -12,7 +12,6 @@ import Loaders from "./components/Extras/Loaders";
 import { AuthRoutes } from "./constants/routes";
 
 const App: React.FC = () => {
-  const isLoggedIn = useAppSelector((state) => state.user.registered);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -22,13 +21,9 @@ const App: React.FC = () => {
         withCredentials: true,
       });
 
-      console.log(response);
-
       if (response) {
         const status = response.data.registered;
-        if (status) {
-          console.log(status);
-          
+        if (status) {          
           dispatch(userActions.setUser(response.data));
         }
       }

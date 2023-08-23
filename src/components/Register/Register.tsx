@@ -109,8 +109,6 @@ const Register: React.FC = () => {
           /** Status is true if user is already registered*/
           const status = response.data.status;
 
-          console.log(response);
-
           setIsUserRegistered(status ?? false);
 
           if (status) {

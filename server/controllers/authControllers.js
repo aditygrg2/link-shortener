@@ -67,7 +67,6 @@ const createUser = async (req, res, done) => {
                 email: user.email,
                 password: user.password,
             }
-            console.log(req.body);
             return done(null, user);
         }
     }
