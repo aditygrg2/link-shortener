@@ -6,8 +6,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 
 const LargeScreen : React.FC = () => {
     const user = useAppSelector(state => state.user);
-
-    console.log(user);
     
     return (
         <div className="hidden lg:flex lg:flex-row items-center justify-between m-4">

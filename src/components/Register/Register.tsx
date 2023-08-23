@@ -47,15 +47,6 @@ const Register: React.FC = () => {
   const isLoginOpen = useSelector((state: stateObj) => state.isLoginOpen);
   const dispatch = useAppDispatch();
 
-  const togglePage = () => {
-    setLoading((prev) => !prev);
-
-    setTimeout(() => {
-      setLoading((prev) => !prev);
-      // setLoginPage(prev => !prev);
-    }, 400);
-  };
-
   const headerText = (): string => {
     let header = "Let's get you started!";
     if (isUserRegistered) {
@@ -82,10 +73,7 @@ const Register: React.FC = () => {
   const submitHandler = async (password: string) => {
     setLoading(true);
     let currentState = authState;
-    currentState.password = password;
-
-    console.log(isUserRegistered);
-    
+    currentState.password = password;    
 
     const response = await axios.post(
       isUserRegistered ? AuthRoutes.submitLogin : AuthRoutes.submitRegister,
@@ -94,15 +82,10 @@ const Register: React.FC = () => {
       }
     );
 
-    console.log(response);
-    
-
-    if(response.data.status){
-      dispatch(userActions.setUser(currentState));
-    }
-    
-    /**REDUX SET HERE! */
-
+    if(response.data.registered){
+      dispatch(userActions.setUser(response.data));
+    }    
+  
     setLoading(false);
     dispatch(toggleLogin());
   };
@@ -112,13 +95,6 @@ const Register: React.FC = () => {
 
     const inputValue = currentInputRef.current?.value;
     const inputType = currentInputRef.current?.name;
-
-    console.log(inputValue);
-    
-
-    /**
-     * TODO: TRIMMING, VALIDATING EMAILS
-     */
 
     if (inputValue) {
       switch (inputType) {
@@ -288,17 +264,7 @@ const Register: React.FC = () => {
                   )}
                 </div>
                 <div className="flex items-center justify-between w-full lg:w-96 px-3">
-                  {/* {loginPage ? <button type="reset" className="text-gray-400 text-xs ">Forgot Password ?</button> : <div className="text-gray-400 text-xs space-x-1 flex items-center cursor-pointer">
-                                        <input type={'checkbox'} />
-                                        <button>Remember me</button>
-                                    </div>}
-
-                                    {
-                                        loginPage ?
-                                            <button onClick={togglePage} type="button" className="text-gray-400 text-xs ">New here? <span className="text-primaryButton opacity-80">Sign Up</span></button> :
-
-                                            <button onClick={togglePage} type="button" className="text-gray-400 text-xs ">Already Registerd? <span className="text-primaryButton opacity-80">Log In</span></button>
-                                    } */}
+                  {isUserRegistered && <button type="reset" className="text-gray-400 text-xs ">Forgot Password?</button>}
                 </div>
 
                 <input

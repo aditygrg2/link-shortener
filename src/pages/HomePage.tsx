@@ -42,6 +42,8 @@ const HomePage: React.FC = () => {
                 customURL: customURLRef.current?.value,
                 expiryTime: expiryTimeRef.current?.value,
                 languageSelected: languageSelectRef.current?.value
+            }, {
+                withCredentials: true
             })
 
             if (response.status >= 200 && response.status < 300) {

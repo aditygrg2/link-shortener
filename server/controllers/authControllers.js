@@ -6,6 +6,16 @@ const successRedirector = (req, res) => {
     return res.redirect(`${CLIENT_URL}`);
 }
 
+const localAuthSuccess = (req, res) => {
+    return res.status(200).send({
+        registered: true,
+        userData: {
+            email: req.user.email,
+            name: req.user.name
+        }
+    })
+}
+
 const authenticationDataHandler = (req, res) => {
     const status = req.isAuthenticated();
 
@@ -69,4 +79,4 @@ const createUser = async (req, res, done) => {
     return done(null, null);
 }
 
-module.exports = {successRedirector, authenticationDataHandler, checkUser, createUser};
+module.exports = {successRedirector, authenticationDataHandler, checkUser, createUser, localAuthSuccess};

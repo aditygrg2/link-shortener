@@ -35,7 +35,7 @@ const App: React.FC = () => {
       setLoading(false);
     };
     checkRegistered();
-  }, [isLoggedIn]);
+  }, []);
 
   return loading ? (
     <Loaders />

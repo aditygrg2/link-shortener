@@ -12,8 +12,8 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 
 router.get('/checkAuth', authControllers.authenticationDataHandler)
 router.post('/checkUser', authControllers.checkUser);
-router.post('/submitLogin', passport.authenticate('local', { failureRedirect: `${CLIENT_URL}` }), authRedirectors.successRedirector);
-router.post('/submitRegister', authRedirectors.createUser, passport.authenticate('local', { failureRedirect: `${CLIENT_URL}` }), authRedirectors.successRedirector);
+router.post('/submitLogin', passport.authenticate('local', { failureRedirect: `${CLIENT_URL}` }), authRedirectors.localAuthSuccess);
+router.post('/submitRegister', authRedirectors.createUser, passport.authenticate('local', { failureRedirect: `${CLIENT_URL}` }), authRedirectors.localAuthSuccess);
 
 
 module.exports = router
