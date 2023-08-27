@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router();
 const shortenURLController = require('../controllers/shortenerController');
-const AuthRouter = require('./auth/AuthRouter');
+const AuthRouter = require('./AuthRouter');
 const { CLIENT_URL } = require('../constants/urls');
+const UtilRouter = require('./UtilRouter');
 
 // SUBROUTES
 router.use('/auth', AuthRouter);
+router.use('/utils', UtilRouter);
 
 /////////////////
 // NO MORE ROUTES ALLOWED!
