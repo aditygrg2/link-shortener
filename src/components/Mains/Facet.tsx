@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { BsArrowClockwise, BsInfo } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { handleCustomURLError } from "../../utils/handlers";
@@ -16,9 +16,12 @@ type FacetPropsType = {
   label: boolean;
   errorVariable?: boolean;
   errorFunction?: () => string;
+  onClick?: () => void;
+  labelTitle?: string;
   others?: {
     [key: string]: any;
   };
+  children?: React.ReactElement
 };
 
 const Facet: React.FC<FacetPropsType> = (props) => {
@@ -27,7 +30,7 @@ const Facet: React.FC<FacetPropsType> = (props) => {
       className={`rounded-md p-2 flex items-center px-4 bg-[#222222] ${props.className}`}
     >
       {props.label && (
-        <label htmlFor={props.inputId}>{props.placeholder}</label>
+        <label htmlFor={props.inputId}>{props.labelTitle}</label>
       )}
       <input
         value={props.value}
@@ -38,14 +41,15 @@ const Facet: React.FC<FacetPropsType> = (props) => {
         className={`bg-transparent outline-none w-full ` + props.inputClassName}
         {...props.others}
       />
+      {props.children}
       {props.loadWhen && (
         <BsArrowClockwise className="animate-spin"></BsArrowClockwise>
       )}
-      {props.errorVariable && props.value &&props.errorFunction && (
+      {props.errorVariable && props.value && props.errorFunction && (
         <>
           <BsInfo
             data-tooltip-id={props.placeholder}
-            data-tooltip-content = {props.errorFunction()}
+            data-tooltip-content={props.errorFunction()}
             data-tooltip-place="top"
             className="rounded-full scale-150 bg-amber-500"
           ></BsInfo>

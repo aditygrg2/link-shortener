@@ -1,27 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import NavBar from "../components/Navbar/NavBar";
 import ParticlesContainer from "../components/Extras/ParticlesContainer";
 import { BiCheck, BiCopyAlt, BiLink, BiLoaderAlt } from "react-icons/bi";
-import { Tooltip } from "react-tooltip";
-import {
-  BsArrowClockwise,
-  BsArrowDown,
-  BsCircle,
-  BsQrCode,
-  BsX,
-} from "react-icons/bs";
+import { generate } from "random-words";
+import { BsArrowDown, BsCheck, BsQrCode, BsSearch, BsX } from "react-icons/bs";
 import axios from "axios";
 import { languages, urls } from "../constants/constant";
 import { motion } from "framer-motion";
 import { fadeIn } from "../constants/variants";
 import QRCodeModal from "../components/Modals/QRCodeModal";
 import Facet from "../components/Mains/Facet";
-import { handleCustomURLError, isPasswordPatternValid } from "../utils/handlers";
+import {
+  handleCustomURLError,
+  isPasswordPatternValid,
+} from "../utils/handlers";
 import { LinkRoutes } from "../constants/routes";
 
 let loadedTime = new Date().toISOString();
 loadedTime = loadedTime.substring(0, loadedTime.lastIndexOf(":"));
-console.log(loadedTime);
 
 const HomePage: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,28 +36,31 @@ const HomePage: React.FC = () => {
   const [customURLValue, setCustomURLValue] = useState("");
   const [isURLFound, setIsURLFound] = useState(false);
   const [customURLLoading, setCustomURLLoading] = useState(false);
-  const [expiryTime, setExpiryTime] = useState(undefined);
+  const [expiryTime, setExpiryTime] = useState("");
   const [languageSelected, setLanguageSelected] = useState("Auto");
   const [password, setPassword] = useState("");
+  const [mainLink, setMainLink] = useState("");
+  const [randomLink, setRandomLink] = useState("");
+  const [randomLinkLoader, setRandomLinkLoader] = useState(false);
 
   const handleLinkSubmit = async () => {
-    setLoading(true);
-    let path;
-    if (inputRef.current?.value) {
-      path = inputRef.current.value;
-    } else {
+    console.log(isLinkInvalidChecks);
+
+    if (isLinkInvalidChecks) {
+      setLoading(false);
       return;
     }
 
+    setLoading(true);
     try {
       const response = await axios.post(
         LinkRoutes.shortenLink,
         {
-          path,
-          customURL: customURLValue,
+          path: mainLink.trim(),
+          customURL: customURLValue.trim(),
           expiryTime: expiryTime,
           languageSelected: languageSelected,
-          password
+          password: password.trim(),
         },
         {
           withCredentials: true,
@@ -66,7 +71,7 @@ const HomePage: React.FC = () => {
         setLoading(false);
         const url = urls.SERVER_URL + "/" + response.data.newPath;
         setShortenedLink(url);
-        inputRef.current.value = url;
+        setMainLink(url);
       } else {
         // show error
       }
@@ -89,9 +94,7 @@ const HomePage: React.FC = () => {
 
   const handleAnotherLink = () => {
     setShortenedLink("");
-    if (inputRef.current?.value) {
-      inputRef.current.value = "";
-    }
+    setMainLink("");
   };
 
   const handleCustomURLChange = (e: any) => {
@@ -103,12 +106,9 @@ const HomePage: React.FC = () => {
       const interval = setTimeout(() => {
         setCustomURLLoading(true);
         const checkData = async () => {
-          const result = await axios.post(
-            LinkRoutes.checkCustomURL,
-            {
-              customURL: customURLValue,
-            }
-          );
+          const result = await axios.post(LinkRoutes.checkCustomURL, {
+            customURL: customURLValue,
+          });
 
           setIsURLFound(result.data.status);
           setCustomURLLoading(false);
@@ -119,10 +119,49 @@ const HomePage: React.FC = () => {
         clearInterval(interval);
       };
     }
-  }, [customURLValue]);
+  }, [customURLValue.trim()]);
 
   const handleLanguageSelected = (e: any) => {
     setLanguageSelected(e.target.value);
+  };
+
+  const onMainLinkChange = (e: any) => {
+    setMainLink(e.target.value);
+  };
+
+  const isLinkInvalidChecks = useMemo((): boolean => {
+    return (
+      mainLink.length == 0 ||
+      customURLLoading ||
+      isURLFound ||
+      !isPasswordPatternValid(password) ||
+      loadedTime === expiryTime
+    );
+  }, [mainLink, customURLLoading, isURLFound, mainLink, password]);
+
+  const generateMemorisableWords = async () => {
+    setRandomLinkLoader(true);
+
+    while (true) {
+      const word = generate(2).join("-");
+
+      const result = await axios.post(LinkRoutes.checkCustomURL, {
+        customURL: word,
+      });
+
+      console.log(result);
+
+      if (!result.data.status) {
+        setRandomLink(word);
+        break;
+      }
+    }
+    setRandomLinkLoader(false);
+  };
+
+  const setMemorisableWord = () => {
+    setCustomURLValue(randomLink);
+    setRandomLink("");
   };
 
   return (
@@ -184,17 +223,18 @@ const HomePage: React.FC = () => {
                     </button>
 
                     <input
-                      ref={inputRef}
+                      onChange={onMainLinkChange}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                          shortenedLink.length
+                          shortenedLink.length > 0
                             ? handleCopy()
                             : handleLinkSubmit();
                         }
                       }}
-                      placeholder="https://urls.cc/shots/"
+                      placeholder="Shorten your link..."
                       type={"text"}
                       autoFocus
+                      value={mainLink}
                       className={`bg-transparent outline-none h-8 w-full placeholder:text-white`}
                     />
 
@@ -211,12 +251,8 @@ const HomePage: React.FC = () => {
                         toggleModal={setQRCodeEnabled}
                       ></QRCodeModal>
                     ) : (
-                      <button
-                        title="Generate QR code"
-                        className={`p-2  flex items-center justify-start rounded-md aspect-square ${
-                          !shortenedLink.length ? "text-gray-300" : "text-white"
-                        }`}
-                        disabled={!shortenedLink.length ? true : false}
+                      shortenedLink.length > 0 ?
+                      <BsQrCode
                         onClick={(e) => {
                           if (shortenedLink) {
                             setQRCodeEnabled(true);
@@ -224,9 +260,9 @@ const HomePage: React.FC = () => {
                             // setError
                           }
                         }}
-                      >
-                        <BsQrCode />
-                      </button>
+                        title="Generate QR code"
+                        className={`cursor-pointer`}
+                      /> : <></>
                     )}
                   </div>
 
@@ -234,6 +270,7 @@ const HomePage: React.FC = () => {
                     onClick={
                       shortenedLink.length ? handleCopy : handleLinkSubmit
                     }
+                    disabled={isLinkInvalidChecks}
                     title="Get Your link"
                     className="border-[1px] border-primaryButton-0 text-white items-center flex justify-center text-xl h-12 aspect-square tracking-wide rounded-md bg-shadow hover:bg-primaryButton-0 transition-all"
                   >
@@ -271,7 +308,7 @@ const HomePage: React.FC = () => {
                   >
                     <div className="w-full p-2 grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2 text-sm">
                       <Facet
-                      key={1}
+                        key={1}
                         errorVariable={isURLFound}
                         type="text"
                         loader={true}
@@ -284,8 +321,8 @@ const HomePage: React.FC = () => {
                             : `bg-[#222222]`
                         }`}
                         value={customURLValue}
-                        onValueChange={handleCustomURLChange}                      
-                        errorFunction={() => 
+                        onValueChange={handleCustomURLChange}
+                        errorFunction={() =>
                           handleCustomURLError(customURLValue, isURLFound)
                         }
                         placeholder="Custom Domain"
@@ -299,6 +336,7 @@ const HomePage: React.FC = () => {
                         others={{
                           min: loadedTime,
                         }}
+                        labelTitle="Expiry Time"
                         inputId="date-and-time"
                         inputClassName={
                           "bg-transparent outline-none placeholder:text-xs"
@@ -327,11 +365,49 @@ const HomePage: React.FC = () => {
                         label={false}
                         type="password"
                         value={password}
-                        className={password.length > 0 ? isPasswordPatternValid(password) ? 'bg-green-500' : 'bg-red-500' : 'bg-[#222222]'}
+                        className={
+                          password.length > 0
+                            ? isPasswordPatternValid(password)
+                              ? "bg-green-500"
+                              : "bg-red-500"
+                            : "bg-[#222222]"
+                        }
                         placeholder="Enter Password"
                         errorVariable={!isPasswordPatternValid(password)}
-                        errorFunction={() => "Password must be between 8-20 characters."}
+                        errorFunction={() =>
+                          "Password must be between 6-20 characters."
+                        }
                       />
+
+                      <Facet
+                        key={4}
+                        label={true}
+                        placeholder="Click on search"
+                        labelTitle="Randomiser"
+                        type=""
+                        others={{
+                          disabled: true,
+                        }}
+                        value={randomLink}
+                        loader={true}
+                        loadWhen={randomLinkLoader}
+                        className="text-white justify-between whitespace-nowrap space-x-2 w-full cursor-pointer"
+                      >
+                        <>
+                          <BsSearch
+                            className="scale-[1.5]"
+                            onClick={generateMemorisableWords}
+                          >
+                            Try
+                          </BsSearch>
+                          {randomLink.length > 0 && (
+                            <BsCheck
+                              className="scale-[2.8]"
+                              onClick={setMemorisableWord}
+                            ></BsCheck>
+                          )}
+                        </>
+                      </Facet>
 
                       <div
                         className={

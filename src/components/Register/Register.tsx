@@ -196,7 +196,7 @@ const Register: React.FC = () => {
 
               <h1 className="flex flex-col space-y-3 text-3xl text-gray-300 whitespace-normal md:whitespace-nowrap w-full p-2 text-center">
                 <span className="text-primaryButton text-5xl italic">
-                  LogoName
+                  Kuts
                 </span>
 
                 <span>{headerText()}</span>
