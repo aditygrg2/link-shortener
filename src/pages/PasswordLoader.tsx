@@ -10,6 +10,7 @@ export default function PasswordLoader() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [link, setLink] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -22,11 +23,14 @@ export default function PasswordLoader() {
         withCredentials: true
       })
 
-      console.log(response);
-
       if(!response.data.status){
         setLoading(false);
         setError(true);
+      }
+      else{
+        setLoading(false);
+        setError(false);
+        setLink(response.data.url);
       }
     }
   }
@@ -39,6 +43,7 @@ export default function PasswordLoader() {
         <button type='submit'>Submit</button>
         {loading && <BsArrowClockwise className='animate-spin'></BsArrowClockwise>}
         {error && <p>Incorrect Password</p>}
+        {link && <button><a href={`${link}`}>Go to Link</a></button>}
     </form>
     </>
   )

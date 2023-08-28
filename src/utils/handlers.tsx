@@ -21,5 +21,5 @@ export function handleCustomURLError(customURL: string, isURLFound: boolean): st
 }
 
 export function isPasswordPatternValid(password: string): boolean {
-    return password.match(RegExp(/.{8,100}$/))!== null;
+    return password.match(RegExp(/.{6,100}$/))!== null;
 }

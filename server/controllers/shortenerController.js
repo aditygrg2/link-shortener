@@ -94,12 +94,13 @@ module.exports.handleLink = async (req, res) => {
 }
 
 module.exports.shortenByID = async (req, res) => {
-    console.log("Here");
     const LinkID = req.body.id;
     const password = req.body.password;
 
     try{
         const link = await Link.findById(LinkID);
+
+        console.log(link.password === password);
     
         if(link){
             if(link.password === password){
@@ -107,8 +108,10 @@ module.exports.shortenByID = async (req, res) => {
                 if(!url.includes('http') || !url.includes('https')){
                     url = 'https://' + url;
                 }
-                console.log(url);
-                return res.redirect(url);
+                return res.status(200).json({
+                    url,
+                    status: true
+                });
             }
             else{
                 return res.status(200).json({
