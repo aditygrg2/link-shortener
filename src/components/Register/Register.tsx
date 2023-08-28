@@ -9,7 +9,7 @@ import InputComponent from "./InputComponent";
 import axios from "axios";
 import { AuthRoutes } from "../../constants/routes";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import UserSlice, { userActions } from "../../store/Slice/UserSlice";
+import { userActions } from "../../store/Slice/UserSlice";
 
 interface stateObj {
   isLoginOpen: boolean;
@@ -262,7 +262,7 @@ const Register: React.FC = () => {
                   )}
                 </div>
                 <div className="flex items-center justify-between w-full lg:w-96 px-3">
-                  {isUserRegistered && <button type="reset" className="text-gray-400 text-xs ">Forgot Password?</button>}
+                  {isUserRegistered && <button type="reset" className="text-white text-xs ">Forgot Password?</button>}
                 </div>
 
                 <input

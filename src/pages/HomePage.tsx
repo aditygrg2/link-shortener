@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../components/Navbar/NavBar";
 import ParticlesContainer from "../components/Extras/ParticlesContainer";
 import { BiCheck, BiCopyAlt, BiLink, BiLoaderAlt } from "react-icons/bi";
+import { Tooltip } from "react-tooltip";
 import {
   BsArrowClockwise,
   BsArrowDown,
@@ -14,20 +15,17 @@ import { languages, urls } from "../constants/constant";
 import { motion } from "framer-motion";
 import { fadeIn } from "../constants/variants";
 import QRCodeModal from "../components/Modals/QRCodeModal";
-import ErrorWrapper from "../components/Extras/ErrorWrapper";
-import { handleCustomURLError } from "../utils/handlers";
 import Facet from "../components/Mains/Facet";
+import { handleCustomURLError, isPasswordPatternValid } from "../utils/handlers";
+import { LinkRoutes } from "../constants/routes";
 
 let loadedTime = new Date().toISOString();
-loadedTime = loadedTime.substring(0, loadedTime.lastIndexOf(':'));
+loadedTime = loadedTime.substring(0, loadedTime.lastIndexOf(":"));
 console.log(loadedTime);
-
 
 const HomePage: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const languageSelectRef = useRef<HTMLSelectElement>(null);
 
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [shortenedLink, setShortenedLink] = useState("");
   const [linkCopied, setLinkCopied] = useState(false);
@@ -37,6 +35,8 @@ const HomePage: React.FC = () => {
   const [isURLFound, setIsURLFound] = useState(false);
   const [customURLLoading, setCustomURLLoading] = useState(false);
   const [expiryTime, setExpiryTime] = useState(undefined);
+  const [languageSelected, setLanguageSelected] = useState("Auto");
+  const [password, setPassword] = useState("");
 
   const handleLinkSubmit = async () => {
     setLoading(true);
@@ -44,18 +44,18 @@ const HomePage: React.FC = () => {
     if (inputRef.current?.value) {
       path = inputRef.current.value;
     } else {
-      setError(true);
       return;
     }
 
     try {
       const response = await axios.post(
-        `${urls.SERVER_URL}/shorten`,
+        LinkRoutes.shortenLink,
         {
           path,
           customURL: customURLValue,
           expiryTime: expiryTime,
-          languageSelected: languageSelectRef.current?.value,
+          languageSelected: languageSelected,
+          password
         },
         {
           withCredentials: true,
@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
         setCustomURLLoading(true);
         const checkData = async () => {
           const result = await axios.post(
-            `${urls.SERVER_URL}/utils/checkCustomURL`,
+            LinkRoutes.checkCustomURL,
             {
               customURL: customURLValue,
             }
@@ -120,6 +120,10 @@ const HomePage: React.FC = () => {
       };
     }
   }, [customURLValue]);
+
+  const handleLanguageSelected = (e: any) => {
+    setLanguageSelected(e.target.value);
+  };
 
   return (
     <div
@@ -191,7 +195,7 @@ const HomePage: React.FC = () => {
                       placeholder="https://urls.cc/shots/"
                       type={"text"}
                       autoFocus
-                      className={`bg-transparent outline-none h-8 w-full placeholder:text-gray-400`}
+                      className={`bg-transparent outline-none h-8 w-full placeholder:text-white`}
                     />
 
                     {shortenedLink.length > 0 && (
@@ -266,31 +270,30 @@ const HomePage: React.FC = () => {
                     className={`w-full border-b border-b-primaryButton-0 backdrop-blur-lg bg-[#121212]/40 rounded-lg overflow-hidden`}
                   >
                     <div className="w-full p-2 grid grid-cols-1 items-center justify-center md:grid-cols-2 gap-2 text-sm">
-                      <ErrorWrapper
-                        errorMessage={handleCustomURLError(
-                          customURLValue,
-                          isURLFound
-                        )}
-                      >
-                        <Facet
-                          type="text"
-                          loader={true}
-                          loadWhen={customURLLoading}
-                          className={`${
-                            !customURLLoading && customURLValue.length > 0
-                              ? !isURLFound
-                                ? `bg-green-500`
-                                : "bg-red-500"
-                              : `bg-[#222222]`
-                          }`}
-                          value={customURLValue}
-                          onValueChange={handleCustomURLChange}
-                          placeholder="Custom Domain"
-                          label={false}
-                        ></Facet>
-                      </ErrorWrapper>
+                      <Facet
+                      key={1}
+                        errorVariable={isURLFound}
+                        type="text"
+                        loader={true}
+                        loadWhen={customURLLoading}
+                        className={`${
+                          !customURLLoading && customURLValue.length > 0
+                            ? !isURLFound
+                              ? `bg-green-500`
+                              : "bg-red-500"
+                            : `bg-[#222222]`
+                        }`}
+                        value={customURLValue}
+                        onValueChange={handleCustomURLChange}                      
+                        errorFunction={() => 
+                          handleCustomURLError(customURLValue, isURLFound)
+                        }
+                        placeholder="Custom Domain"
+                        label={false}
+                      ></Facet>
 
                       <Facet
+                        key={2}
                         onValueChange={onExpiryTimeSet}
                         value={expiryTime}
                         others={{
@@ -304,22 +307,48 @@ const HomePage: React.FC = () => {
                         className={
                           `text-white justify-between whitespace-nowrap space-x-2 w-full cursor-pointer ` +
                           `${
-                            (expiryTime !== undefined &&
-                            expiryTime !== loadedTime)
+                            !expiryTime
+                              ? `bg-[#222222]`
+                              : expiryTime !== loadedTime
                               ? `bg-green-500`
                               : "bg-red-500"
-                          }`
+                          }
+                          `
                         }
                         label={true}
                         placeholder="Expiry Time"
                       ></Facet>
 
-                      <div className="bg-[#222222] rounded-md p-2 text-gray-400 flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4">
+                      <Facet
+                        key={3}
+                        onValueChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
+                        label={false}
+                        type="password"
+                        value={password}
+                        className={password.length > 0 ? isPasswordPatternValid(password) ? 'bg-green-500' : 'bg-red-500' : 'bg-[#222222]'}
+                        placeholder="Enter Password"
+                        errorVariable={!isPasswordPatternValid(password)}
+                        errorFunction={() => "Password must be between 8-20 characters."}
+                      />
+
+                      <div
+                        className={
+                          "rounded-md p-2 text-white flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4 " +
+                          `${
+                            languageSelected !== "Auto"
+                              ? "bg-green-500"
+                              : "bg-[#222222]"
+                          }`
+                        }
+                      >
                         <select
-                          ref={languageSelectRef}
+                          value={languageSelected}
                           id="translated"
                           title="translated-lang"
                           className="bg-transparent outline-none w-full"
+                          onChange={handleLanguageSelected}
                         >
                           {languages.map((lang) => {
                             return <option value={lang}>{lang}</option>;

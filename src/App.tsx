@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import HomePage from "./pages/HomePage";
 import { AnimatePresence } from "framer-motion";
 import { Route, Routes } from "react-router-dom";
 import LinkExpired from "./pages/LinkExpired";
-import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
+import { useAppDispatch } from "./hooks/reduxHooks";
 import axios from "axios";
-import { urls } from "./constants/constant";
 import { userActions } from "./store/Slice/UserSlice";
 import MainPage from "./pages/MainPage";
 import Loaders from "./components/Extras/Loaders";
 import { AuthRoutes } from "./constants/routes";
+import PasswordLoader from "./pages/PasswordLoader";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +38,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/expired" element={<LinkExpired />} />
+        <Route path="/password-auth/:id" element={<PasswordLoader/>}/>
       </Routes>
     </AnimatePresence>
   );

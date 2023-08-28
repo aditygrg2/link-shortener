@@ -20,6 +20,10 @@ const LinkSchema = mongoose.Schema({
     languageCode:{
         type: String, 
         default: ""
+    },
+    password: {
+        type: String,
+        default: ""
     }
 }, {
     timestamps: true

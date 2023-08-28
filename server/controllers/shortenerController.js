@@ -17,6 +17,7 @@ module.exports.shortenURL = async (req, res) => {
     const expiryDate = manageExpiryDate(req.body.expiryTime);
     const languageCode = req.body.languageSelected ? languages[req.body.languageSelected] : "";
     let newPath = customURL ? customURL : randomstring.generate(6);
+    const password = req.body.password;
 
     try{
         let check = await Link.find({shortenedURL: newPath});
@@ -39,7 +40,8 @@ module.exports.shortenURL = async (req, res) => {
                 link: path,
                 shortenedURL: newPath,
                 languageCode,
-                expireAt: expiryDate
+                expireAt: expiryDate,
+                password
             });
         
             await newLink.save();
@@ -71,6 +73,10 @@ module.exports.handleLink = async (req, res) => {
                return res.status(200).redirect(CLIENT_URL + '/expired');
             }
 
+            if(url.password.length > 0){
+                return res.status(200).redirect(CLIENT_URL + `/password-auth/${url.id}`)
+            }
+
             if(!url.languageCode){
                 return res.redirect(url.link);
             }
@@ -85,4 +91,40 @@ module.exports.handleLink = async (req, res) => {
         console.log(err);
         return res.send("<div>Requested URL not found on our server</div>")
     }
+}
+
+module.exports.shortenByID = async (req, res) => {
+    console.log("Here");
+    const LinkID = req.body.id;
+    const password = req.body.password;
+
+    try{
+        const link = await Link.findById(LinkID);
+    
+        if(link){
+            if(link.password === password){
+                let url = link['link'];
+                if(!url.includes('http') || !url.includes('https')){
+                    url = 'https://' + url;
+                }
+                console.log(url);
+                return res.redirect(url);
+            }
+            else{
+                return res.status(200).json({
+                    status: false,
+                    message: 'Incorrect Password'
+                })
+            }
+        }
+    
+        return res.status(200).json({
+            status: false,
+            message: 'Link not valid!'
+        })
+    }
+    catch(err){
+        console.log(err);
+    }
+
 }

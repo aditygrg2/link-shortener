@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router();
 const shortenURLController = require('../controllers/shortenerController');
 const AuthRouter = require('./AuthRouter');
-const { CLIENT_URL } = require('../constants/urls');
 const UtilRouter = require('./UtilRouter');
 
 // SUBROUTES
@@ -13,6 +12,7 @@ router.use('/utils', UtilRouter);
 // NO MORE ROUTES ALLOWED!
 router.get('/:id', shortenURLController.handleLink);
 router.post('/shorten', shortenURLController.shortenURL);
+router.post('/shortenByID', shortenURLController.shortenByID);
 ////////////////
 
 

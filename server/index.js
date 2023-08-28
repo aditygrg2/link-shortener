@@ -52,7 +52,7 @@ app.use(passport.session());
 
 require('./config/passport-local-strategy');
 
-app.use('/', setAuthenticatedUser, require('./routes'));
+app.use('/', setResponse, setAuthenticatedUser, require('./routes'));
 
 const PORT = 8000;
 app.listen(PORT, ()=>{

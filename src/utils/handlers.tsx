@@ -1,5 +1,3 @@
-import { idText } from "typescript"
-
 export function handleMinimumTime() : string {
     return new Date().toISOString().slice(0,new Date().toISOString().lastIndexOf(":"))
 }
@@ -11,7 +9,7 @@ export function handleCustomURLError(customURL: string, isURLFound: boolean): st
         return errorMessage;
     }
 
-    if(!customURL.match(RegExp(/\w+/))){
+    if(!customURL.match(RegExp(/(a-zA-Z0-9)+/))){
         errorMessage = 'Incorrect Pattern';
     }
 
@@ -20,4 +18,8 @@ export function handleCustomURLError(customURL: string, isURLFound: boolean): st
     }
 
     return errorMessage;
+}
+
+export function isPasswordPatternValid(password: string): boolean {
+    return password.match(RegExp(/.{8,100}$/))!== null;
 }
