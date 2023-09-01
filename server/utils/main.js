@@ -15,3 +15,12 @@ module.exports.calculateGTLink = (languageCode, link) => {
     return modifiedLink + additer;
 }
 
+module.exports.linkScript = (link) => {
+    return `<script>
+    function temp(){
+        window.location.replace("${link}")
+    }
+    temp();
+    </script>`
+}
+

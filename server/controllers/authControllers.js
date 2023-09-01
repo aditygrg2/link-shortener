@@ -16,6 +16,14 @@ const localAuthSuccess = (req, res) => {
     })
 }
 
+const localAuthFailure = (err, req, res) => {
+    console.log(err);
+
+    return res.status(200).send({
+        'f': 2
+    })
+}
+
 const authenticationDataHandler = (req, res) => {
     const status = req.isAuthenticated();
 
@@ -78,4 +86,4 @@ const createUser = async (req, res, done) => {
     return done(null, null);
 }
 
-module.exports = {successRedirector, authenticationDataHandler, checkUser, createUser, localAuthSuccess};
+module.exports = {successRedirector, localAuthFailure, authenticationDataHandler, checkUser, createUser, localAuthSuccess};

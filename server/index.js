@@ -23,6 +23,7 @@ app.use(cors(
     {
         origin: CLIENT_URL,
         credentials: true,
+        methods: 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
     }
 ));
 
@@ -52,7 +53,7 @@ app.use(passport.session());
 
 require('./config/passport-local-strategy');
 
-app.use('/', setResponse, setAuthenticatedUser, require('./routes'));
+app.use('/', setAuthenticatedUser, require('./routes'));
 
 const PORT = 8000;
 app.listen(PORT, ()=>{
