@@ -5,14 +5,15 @@ import RegisterButton from "./RegisterButton";
 import { RxArrowRight, RxHamburgerMenu } from 'react-icons/rx';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleDrawer } from '../../store/Slice/DrawerNavSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
 interface stateObj {
     drawerNav : boolean,
 }
 
 const DrawerNav: React.FC = () => {
-    const isDrawerOpen = useSelector( (state : stateObj )=> state.drawerNav );
-    const dispatch = useDispatch();
+    const isDrawerOpen = useAppSelector( (state : stateObj )=> state.drawerNav );
+    const dispatch = useAppDispatch();
 
     return (
         <>

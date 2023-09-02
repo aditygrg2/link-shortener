@@ -1,8 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { toggleDrawer } from "../../store/Slice/DrawerNavSlice";
 import { toggleLogin } from "../../store/Slice/LoginSlice";
-import { toggleSignUp } from "../../store/Slice/SignUpSlice";
 import {VscAccount} from 'react-icons/vsc'
 
 const RegisterButton: React.FC = () => {

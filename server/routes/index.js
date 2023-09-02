@@ -9,7 +9,6 @@ const UtilRouter = require('./UtilRouter');
 router.use('/auth', AuthRouter);
 router.use('/utils', UtilRouter);
 
-
 /////////////////
 // NO MORE ROUTES ALLOWED!
 router.get('/:id', shortenURLController.handleLink);

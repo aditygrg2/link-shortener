@@ -24,16 +24,14 @@ router.get("/checkAuth", authControllers.authenticationDataHandler);
 router.post("/checkUser", authControllers.checkUser);
 router.post(
   "/submitLogin",
-  passport.authenticate("local", { failWithError: true }),
+  passport.authenticate("local", {}),
   authRedirectors.localAuthSuccess,
-  authRedirectors.localAuthFailure
 );
 router.post(
   "/submitRegister",
   authRedirectors.createUser,
-  passport.authenticate("local", { failWithError: true }),
+  passport.authenticate("local", {}),
   authRedirectors.localAuthSuccess,
-  authRedirectors.localAuthFailure
 );
 
 module.exports = router;

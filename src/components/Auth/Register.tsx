@@ -1,14 +1,13 @@
 import React, { FormEvent, useReducer, useRef } from "react";
 import { useState } from "react";
 import { RxArrowRight } from "react-icons/rx";
-import { useSelector, useDispatch } from "react-redux";
 import { toggleLogin } from "../../store/Slice/LoginSlice";
 import { BsGoogle } from "react-icons/bs";
 import { urls } from "../../constants/constant";
 import InputComponent from "./InputComponent";
 import axios from "axios";
 import { AuthRoutes } from "../../constants/routes";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { userActions } from "../../store/Slice/UserSlice";
 
 interface stateObj {
@@ -45,7 +44,7 @@ const Register: React.FC = () => {
   const [error, setError] = useState("");
   const currentInputRef = useRef<HTMLInputElement>(null);
 
-  const isLoginOpen = useSelector((state: stateObj) => state.isLoginOpen);
+  const isLoginOpen = useAppSelector((state: stateObj) => state.isLoginOpen);
   const dispatch = useAppDispatch();
 
   const headerText = (): string => {
@@ -71,40 +70,60 @@ const Register: React.FC = () => {
     }
   };
 
-  const submitHandler = async (password: string) => {
-    setLoading(true);
+  const submitHandler = async (password: string): Promise<boolean> => {
     let currentState = authState;
     currentState.password = password;
 
-    const response = await axios.post(
-      isUserRegistered ? AuthRoutes.submitLogin : AuthRoutes.submitRegister,
-      currentState,
-      {
-        withCredentials: true,
+    try {
+      const response = await axios.post(
+        isUserRegistered ? AuthRoutes.submitLogin : AuthRoutes.submitRegister,
+        currentState,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data);
+
+      if (response.data.registered) {
+        dispatch(userActions.setUser(response.data));
+        dispatch(toggleLogin());
+      } else {
+        setError(response.data.error);
       }
-    );
-  
-    if (response.data.registered) {
-      dispatch(userActions.setUser(response.data));
-      dispatch(toggleLogin());
-    }
-    else{
-      setError(response.data.error);
+    } catch (err: any) {
+      console.log(err);
+
+      if (err) {
+        if (err.response.status === 401) {
+          setError("Invalid username or password");
+        } else {
+          setError(err.response.data);
+        }
+
+        setLoading(false);
+      } else {
+        setError("We are having some issues contacting the server");
+        setLoading(false);
+      }
+
+      return false;
     }
 
     setLoading(false);
+    return true;
   };
 
   const handleContinueButton = async (e: FormEvent) => {
-    setLoading(true);    
+    setLoading(true);
 
     const inputValue = currentInputRef.current?.value;
     const inputType = currentInputRef.current?.name;
 
     if (inputValue) {
       switch (inputType) {
-        case "email":          
-          if(!inputValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)){
+        case "email":
+          if (!inputValue.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
             setError("Please write a valid email!");
             setLoading(false);
             return;
@@ -146,17 +165,22 @@ const Register: React.FC = () => {
           break;
 
         case "password":
-          if(inputValue.length < 8){
+          if (inputValue.length < 8) {
             setError("Password length must be greater than 8");
+            setLoading(false);
             return;
           }
-          submitHandler(inputValue);
-          setRegisterStepState(InputTypeEnum.COMPLETED);
-          setError("");
+
+          const isUserAuthCorrect = await submitHandler(inputValue);
+          if (isUserAuthCorrect) {
+            setRegisterStepState(InputTypeEnum.COMPLETED);
+            setError("");
+          }
+
           break;
 
         case "name":
-          if(inputValue.length === 0){
+          if (inputValue.length === 0) {
             setError("Please enter a valid name");
             return;
           }
@@ -173,9 +197,9 @@ const Register: React.FC = () => {
           break;
       }
     } else {
-        setLoading(false);
-        setError("Email field cannot be blank!");
-        return;
+      setLoading(false);
+      setError("Email field cannot be blank!");
+      return;
     }
     setLoading(false);
   };
@@ -284,15 +308,17 @@ const Register: React.FC = () => {
                     ref={currentInputRef}
                   />
                 )}
-                {error.length > 0 && <p className="text-red-500 p-2">{error}</p>}
+                {error.length > 0 && (
+                  <p className="text-red-500 p-2">{error}</p>
+                )}
               </div>
-              <div className="flex items-center justify-between w-full lg:w-96 px-3">
+              {/* <div className="flex items-center justify-between w-full lg:w-96 px-3">
                 {isUserRegistered && (
                   <button type="reset" className="text-white text-xs ">
                     Forgot Password?
                   </button>
                 )}
-              </div>
+              </div> */}
 
               <input
                 type={"button"}
