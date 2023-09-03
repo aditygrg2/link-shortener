@@ -1,6 +1,6 @@
 module.exports = {
-  CLIENT_URL: "http://localhost:3000",
-  DRIVER_URL: "http://localhost:8000",
+  CLIENT_URL: "http://16.171.174.15:8000/build",
+  DRIVER_URL: "http://16.171.174.15:8001",
 };
 
 module.exports.languages = {

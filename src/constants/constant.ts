@@ -1,6 +1,6 @@
 export const urls = {
-  CLIENT_URL: "http://localhost:3000",
-  SERVER_URL: "http://localhost:8000",
+  CLIENT_URL: "http://16.171.174.15:8000/build",
+  SERVER_URL: "http://16.171.174.15:8001",
 };
 
 // These should be consistent as the same name is going to be used in backend.
