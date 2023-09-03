@@ -8,7 +8,7 @@ export default function LinkExpired() {
             <button>Return to website</button>
         </div>
         <div>
-            <img src="./error_dog.png"></img>
+            <img src="./error_dog.png"/>
         </div>
     </div>
   )

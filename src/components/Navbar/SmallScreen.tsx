@@ -17,7 +17,7 @@ const SmallScreen: React.FC = () => {
             <Logo />
             <div className="flex items-center space-x-2">
                 {!user.registered ? <RegisterButton/> : <RHNUser/>}
-                <button onClick={() => { dispatch(toggleDrawer()) }} title="More options" className="text-white">
+                <button onClick={() => { dispatch(toggleDrawer(true)) }} title="More options" className="text-white">
                     <RxHamburgerMenu className="text-white text-3xl" />
                 </button>
             </div>

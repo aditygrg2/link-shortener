@@ -9,7 +9,6 @@ const UtilRouter = require('./UtilRouter');
 router.use('/auth', AuthRouter);
 router.use('/utils', UtilRouter);
 const { CLIENT_URL } = require('../constants/urls');
-const  gameWebsiteController  = require('../controllers/registerGameController');
 
 
 /////////////////

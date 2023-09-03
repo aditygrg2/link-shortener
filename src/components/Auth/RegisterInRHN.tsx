@@ -9,9 +9,11 @@ import axios from "axios";
 import { AuthRoutes } from "../../constants/routes";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { userActions } from "../../store/Slice/UserSlice";
+import RightHandSlider from "../RightHandSlider";
+import { toggleRHN } from "../../store/Slice/RHNSlice";
 
 interface stateObj {
-  isLoginOpen: boolean;
+  isRHNOpen: boolean;
 }
 
 type authActions = {
@@ -36,15 +38,18 @@ enum InputTypeEnum {
 
 const Register: React.FC = () => {
   const [authState, setAuthState] = useState(defaultAuthState);
+
   const [registerStepState, setRegisterStepState] = useState(
     InputTypeEnum.EMAIL_SCREEN
   );
+  
   const [isUserRegistered, setIsUserRegistered] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const currentInputRef = useRef<HTMLInputElement>(null);
 
-  const isLoginOpen = useAppSelector((state: stateObj) => state.isLoginOpen);
+  const isRHNOpen = useAppSelector((state: stateObj) => state.isRHNOpen);
+
   const dispatch = useAppDispatch();
 
   const headerText = (): string => {
@@ -87,7 +92,7 @@ const Register: React.FC = () => {
 
       if (response.data.registered) {
         dispatch(userActions.setUser(response.data));
-        dispatch(toggleLogin());
+        dispatch(toggleLogin(false));
       } else {
         setError(response.data.error);
       }
@@ -206,20 +211,8 @@ const Register: React.FC = () => {
 
   return (
     <>
-      {isLoginOpen && (
-        <div
-          onClick={() => dispatch(toggleLogin())}
-          className={`h-full hidden lg:block w-full absolute z-[80] backdrop-blur-xl`}
-        ></div>
-      )}
-      <div
-        className={`h-full ${
-          isLoginOpen ? "lg:w-[40%] w-full opacity-100" : "w-0 opacity-0"
-        } right-0 top-0 backdrop-filter backdrop-blur-md absolute overflow-hidden z-[100] transition-all duration-500 ${
-          isUserRegistered ? "background-login" : "background-signup"
-        }`}
-      >
-        <div className="absolute h-full w-full bg-gradient-to-b from-black/80 via-black/40 to-black/20">
+        <div className="h-full w-full">
+
           {
             <div
               className={`absolute h-full bg-gradient-to-r from-[#131E25] via-[#131E25]/50 to-[#131E25]/5 ${
@@ -227,19 +220,8 @@ const Register: React.FC = () => {
               } transition-all duration-400 top-0 left-0 z-[110] backdrop-blur-md`}
             ></div>
           }
-
+          
           <div className="w-full h-full py-4 px-2 relative overflow-x-hidden overflow-y-scroll text-white space-y-8 scrollbar-hidden">
-            <div className="h-14 w-full">
-              <button
-                onClick={() => {
-                  dispatch(toggleLogin());
-                }}
-                title="Go back"
-                className="p-2 aspect-square rounded-full border border-gray-700 h-14 flex items-center justify-center cursor-pointer"
-              >
-                <RxArrowRight className="text-primaryButton font-bold text-2xl" />
-              </button>
-            </div>
 
             <h1 className="flex flex-col space-y-3 text-3xl text-gray-300 whitespace-normal md:whitespace-nowrap w-full p-2 text-center">
               <span className="text-primaryButton text-5xl italic">Kuts</span>
@@ -312,15 +294,8 @@ const Register: React.FC = () => {
                   <p className="text-red-500 p-2">{error}</p>
                 )}
               </div>
-              {/* <div className="flex items-center justify-between w-full lg:w-96 px-3">
-                {isUserRegistered && (
-                  <button type="reset" className="text-white text-xs ">
-                    Forgot Password?
-                  </button>
-                )}
-              </div> */}
-
               <input
+                title={'Continue'}
                 type={"button"}
                 onClick={handleContinueButton}
                 value="Continue"
@@ -329,9 +304,9 @@ const Register: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };
 
-export default Register;
+export default RightHandSlider(Register);

@@ -5,7 +5,9 @@ const isDrawerNavOpen = createSlice({
   name: 'drawerNav',
   initialState: false,
   reducers: {
-    toggleDrawer : state => !state,
+    toggleDrawer : (state, action) => {
+      return action.payload; 
+    },
   },
 });
 

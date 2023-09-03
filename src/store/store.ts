@@ -14,7 +14,7 @@ const store = configureStore({
     drawerNav: DrawerNavSlice,
     isLoginOpen : isLoginOpen,
     isSignUpOpen : isSignUpOpen, 
-    isRhnOprn: RHNSlice,
+    isRHNOpen: RHNSlice,
     user: UserSlice
   },
 });

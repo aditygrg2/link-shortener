@@ -168,9 +168,9 @@ const HomePage: React.FC = () => {
     <div
       className={`h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden background relative`}
     >
-      <div className="h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden bg-gradient-to-r from-black/80 via-black/60 to-black/0">
-        <NavBar />
+      <div className="h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden bg-gradient-to-r from-black/80 via-black/60 to-black/0"> 
 
+        <NavBar />
         <div className="w-full h-full overflow-hidden relative z-20">
           <ParticlesContainer />
           <div className="w-full h-full pt-16 pl-4 md:pl-8 lg:pl-12 p-2 text-white overflow-x-hidden overflow-y-scroll pb-48 scrollbar-hidden">

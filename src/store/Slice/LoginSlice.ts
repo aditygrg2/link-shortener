@@ -5,7 +5,9 @@ const isLoginOpen = createSlice({
   name: 'isLoginOpen',
   initialState: false,
   reducers: {
-    toggleLogin : state => !state,
+    toggleLogin: (state, action) => {
+      return action.payload; 
+    },
   },
 });
 
