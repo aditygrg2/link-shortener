@@ -13,6 +13,6 @@ const GameUserRegisterSchema = mongoose.Schema({
     Player4: {
         type: Object,
     }
-});
+}, {timestamps : true});
 
 module.exports = mongoose.model('GameUserRegister', GameUserRegisterSchema);
