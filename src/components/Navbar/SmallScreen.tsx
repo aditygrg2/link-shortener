@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { toggleDrawer } from "../../store/Slice/DrawerNavSlice";
 import RegisterButton from "./RegisterButton";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import RHNUser from "../Auth/RHNUser";
 
 
 const SmallScreen: React.FC = () => {
@@ -15,12 +16,11 @@ const SmallScreen: React.FC = () => {
         <div className="text-white w-full h-auto flex items-center justify-between p-4 lg:hidden">
             <Logo />
             <div className="flex items-center space-x-2">
-                {!user.registered ? <RegisterButton/> : <div>Logged In</div>}
+                {!user.registered ? <RegisterButton/> : <RHNUser/>}
                 <button onClick={() => { dispatch(toggleDrawer()) }} title="More options" className="text-white">
                     <RxHamburgerMenu className="text-white text-3xl" />
                 </button>
             </div>
-
         </div>
     )
 }

@@ -69,7 +69,7 @@ const HomePage: React.FC = () => {
 
       if (response.status >= 200 && response.status < 300) {
         setLoading(false);
-        const url = urls.SERVER_URL + "/" + response.data.newPath;
+        const url = urls.CLIENT_URL + "/" + response.data.newPath;
         setShortenedLink(url);
         setMainLink(url);
       } else {

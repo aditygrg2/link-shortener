@@ -16,6 +16,14 @@ const localAuthSuccess = (req, res) => {
     })
 }
 
+const localAuthFailure = (err, req, res) => {
+    console.log(err);
+
+    return res.status(200).send({
+        'f': 2
+    })
+}
+
 const authenticationDataHandler = (req, res) => {
     const status = req.isAuthenticated();
 
@@ -57,12 +65,12 @@ const checkUser = async (req, res) => {
 
 const createUser = async (req, res, done) => {
     try{
-        // Though for a normal user this is already checked once. But this check is still again done.
+        // Though for a normal user this is already checked once. But this check is still again done if someone fiddles with our POST route.
         const user = await User.findOne({email:req.body.email});
     
         if(!user){
             const user = await new User(req.body);
-            user.save();
+            await user.save();
             req.body = {
                 email: user.email,
                 password: user.password,
@@ -78,4 +86,4 @@ const createUser = async (req, res, done) => {
     return done(null, null);
 }
 
-module.exports = {successRedirector, authenticationDataHandler, checkUser, createUser, localAuthSuccess};
+module.exports = {successRedirector, localAuthFailure, authenticationDataHandler, checkUser, createUser, localAuthSuccess};

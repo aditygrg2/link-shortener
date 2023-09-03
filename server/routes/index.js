@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router();
+const gameWebsiteController  = require('../controllers/registerGameController');
 const shortenURLController = require('../controllers/shortenerController');
 const AuthRouter = require('./AuthRouter');
 const UtilRouter = require('./UtilRouter');
@@ -20,6 +21,8 @@ router.post('/shortenByID', shortenURLController.shortenByID);
 router.post("/game/registerUserInGame", gameWebsiteController.registerGameController);
 router.get("/game/payToCompleteRegisteration", gameWebsiteController.paymentHandler);
 router.get("/game/notification/:id", gameWebsiteController.notificationHandler);
+router.post("/game/registerUserInGame", gameWebsiteController.registerGameController);
+router.get("/game/payToCompleteRegisteration", gameWebsiteController.paymentHandler);
 ////////////////
 
 

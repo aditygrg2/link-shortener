@@ -10,5 +10,6 @@ export const AuthRoutes = {
 export const LinkRoutes = {
     shortenLink: `${urls.SERVER_URL}/shorten`,
     checkCustomURL: `${urls.SERVER_URL}/utils/checkCustomURL`,
-    checkLinkAuth: `${urls.SERVER_URL}/shortenByID`
+    checkLinkAuth: `${urls.SERVER_URL}/shortenByID`,
+    initialRouter: (id: string) => `${urls.SERVER_URL}/${id}`
 }
