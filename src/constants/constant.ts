@@ -1,5 +1,5 @@
 export const urls = {
-  CLIENT_URL: "http://16.171.174.15:8000/build",
+  CLIENT_URL: "http://16.171.174.15:8000",
   SERVER_URL: "http://16.171.174.15:8001",
 };
 
