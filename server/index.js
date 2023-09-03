@@ -55,7 +55,7 @@ require('./config/passport-local-strategy');
 
 app.use('/', setAuthenticatedUser, require('./routes'));
 
-const PORT = 8001;
+const PORT = 8000;
 app.listen(PORT, ()=>{
     console.log("Server running on port", PORT);
 })
