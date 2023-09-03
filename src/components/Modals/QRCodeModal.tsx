@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import QRCode from "react-qr-code";
 import ReactDOM from "react-dom";
-import { BsX } from "react-icons/bs";
 
 type QRCodeModalProps = {
   link: string;

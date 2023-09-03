@@ -172,7 +172,7 @@ const HomePage: React.FC = () => {
 
         <NavBar />
         <div className="w-full h-full overflow-hidden relative z-20">
-          <ParticlesContainer />
+          {/* <ParticlesContainer /> */}
           <div className="w-full h-full pt-16 pl-4 md:pl-8 lg:pl-12 p-2 text-white overflow-x-hidden overflow-y-scroll pb-48 scrollbar-hidden">
             <motion.div
               variants={fadeIn("right", 0.5)}

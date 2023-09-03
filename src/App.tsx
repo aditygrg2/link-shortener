@@ -32,7 +32,7 @@ const App: React.FC = () => {
         } else if (res.data.isInvalid) {
           navigate("/404");
         }
-        else{
+        else {
           document.location.replace(res.data.link);
         }
       };
@@ -59,14 +59,12 @@ const App: React.FC = () => {
   return loading ? (
     <Loaders />
   ) : (
-    <AnimatePresence mode="wait">
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/expired" element={<LinkExpired />} />
-        <Route path="/password-auth/:id" element={<PasswordLoader />} />
-        <Route path="/404" element={<NotFoundPage />}></Route>
-      </Routes>
-    </AnimatePresence>
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/expired" element={<LinkExpired />} />
+      <Route path="/password-auth/:id" element={<PasswordLoader />} />
+      <Route path="/404" element={<NotFoundPage />}></Route>
+    </Routes>
   );
 };
 

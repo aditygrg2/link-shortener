@@ -1,6 +1,5 @@
 import React, { FormEvent, useReducer, useRef } from "react";
 import { useState } from "react";
-import { RxArrowRight } from "react-icons/rx";
 import { toggleLogin } from "../../store/Slice/LoginSlice";
 import { BsGoogle } from "react-icons/bs";
 import { urls } from "../../constants/constant";
@@ -9,8 +8,6 @@ import axios from "axios";
 import { AuthRoutes } from "../../constants/routes";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { userActions } from "../../store/Slice/UserSlice";
-import RightHandSlider from "../RightHandSlider";
-import { toggleRHN } from "../../store/Slice/RHNSlice";
 
 interface stateObj {
   isRHNOpen: boolean;
@@ -304,9 +301,8 @@ const Register: React.FC = () => {
             </form>
           </div>
         </div>
-      {/* </div> */}
     </>
   );
 };
 
-export default RightHandSlider(Register);
+export default Register;

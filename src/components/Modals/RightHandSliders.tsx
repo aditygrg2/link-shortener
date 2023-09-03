@@ -1,57 +1,70 @@
 import React, { Dispatch, SetStateAction } from "react";
-import QRCode from "react-qr-code";
 import ReactDOM from "react-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { RxArrowRight } from "react-icons/rx";
+import { AnimatePresence, motion } from 'framer-motion'
+import { useMediaQuery } from '@react-hook/media-query';
 
 type RightHandSliderProps = {
-  openBool: boolean;
-  toggler: any;
-  loading: boolean;
+  togglerRHNModal: Dispatch<SetStateAction<boolean>>;
   children?: React.ReactElement;
 };
 
-export default function RightHandSlider(props: RightHandSliderProps) {
-  const dispatch = useAppDispatch();
-
+const RightHandSliderModal = (props: RightHandSliderProps) => {
+  const isSmallScreen = useMediaQuery('(max-width: 768px)');
   return (
     <>
-      {props.openBool && (
-        <div
-          onClick={() => dispatch(props.toggler())}
-          className={`h-full hidden lg:block w-full absolute z-[80] backdrop-blur-xl`}
-        ></div>
-      )}
-      <div
-        className={`h-full ${
-          props.openBool ? "lg:w-[40%] w-full opacity-100" : "w-0 opacity-0"
-        } right-0 top-0 backdrop-filter backdrop-blur-md absolute overflow-hidden z-[100] transition-all duration-500 background-signup`}
-      >
-        <div className="absolute h-full w-full bg-gradient-to-b from-black/80 via-black/40 to-black/20">
-          {
-            <div
-              className={`absolute h-full bg-gradient-to-r from-[#131E25] via-[#131E25]/50 to-[#131E25]/5 ${
-                props.loading ? "w-full" : "w-0"
-              } transition-all duration-400 top-0 left-0 z-[110] backdrop-blur-md`}
-            ></div>
-          }
+      {<div
+        onClick={() => props.togglerRHNModal(false)}
+        className={`h-full hidden lg:block w-full absolute backdrop-blur-xl z-[80]`}
+      />}
+        <motion.div
+          initial={{
+            width: 0,
+            opacity : 0, 
+          }}
 
-          <div className="w-full h-full py-4 px-2 relative overflow-x-hidden overflow-y-scroll text-white space-y-8 scrollbar-hidden">
-            <div className="h-14 w-full">
-              <button
-                onClick={() => {
-                  dispatch(props.toggler());
-                }}
-                title="Go back"
-                className="p-2 aspect-square rounded-full border border-gray-700 h-14 flex items-center justify-center cursor-pointer"
-              >
-                <RxArrowRight className="text-primaryButton font-bold text-2xl" />
-              </button>
-            </div>
+          animate={{
+            width: (isSmallScreen ? '100%' : '40%'),
+            opacity : 1,
+          }}
+
+          exit={{
+            width: 0,
+            opacity : 0,
+          }}
+
+          transition={{
+            type: 'tween',
+            duration: 0.3,
+          }}
+
+          key={'rhnslider'}
+          className={`h-full absolute right-0 top-0 backdrop-blur-md overflow-x-hidden overflow-y-scroll scrollbar-hidden z-[100]`}
+        >
+          <div className="h-14 w-full absolute top-4 left-4 lg:top-6 lg:left-6 z-[110]">
+            <button
+              onClick={() => props.togglerRHNModal(false)}
+              title="Go back"
+              className="p-2 aspect-square rounded-full border border-gray-700 h-14 flex items-center justify-center cursor-pointer"
+            >
+              <RxArrowRight className="text-primaryButton font-bold text-2xl" />
+            </button>
           </div>
-          {props.children}
-        </div>
-      </div>
+
+          <div className="h-full w-full absolute top-0 left-0 pt-24 bg-[#131E25]">
+            {props.children}
+          </div>
+        </motion.div>
     </>
   );
 }
+
+const rightHandSliderId = document.getElementById('rightHandSlider');
+
+export default function RightHandSlider(props: RightHandSliderProps) {
+  return (
+      ReactDOM.createPortal(<RightHandSliderModal {...props} />, rightHandSliderId!)
+  );
+}
+
