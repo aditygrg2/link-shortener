@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import NavBar from "../components/Navbar/NavBar";
 import ParticlesContainer from "../components/Extras/ParticlesContainer";
-import { BiCheck, BiCopyAlt, BiLink, BiLoaderAlt } from "react-icons/bi";
+import { BiCheck, BiCopyAlt, BiCopyright, BiLink, BiLoaderAlt, BiPointer } from "react-icons/bi";
 import { generate } from "random-words";
 import { BsArrowDown, BsCheck, BsQrCode, BsSearch, BsX } from "react-icons/bs";
 import axios from "axios";
@@ -166,14 +166,17 @@ const HomePage: React.FC = () => {
 
   return (
     <div
-      className={`h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden background relative`}
+      className={`h-full w-full overflow-x-hidden overflow-y-scroll scrollbar-hidden background relative`}
     >
-      <div className="h-full w-full overflow-y-scroll scrollbar-hidden overflow-x-hidden bg-gradient-to-r from-black/80 via-black/60 to-black/0"> 
+      <div className="h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-black/0">
 
         <NavBar />
-        <div className="w-full h-full overflow-hidden relative z-20">
-          {/* <ParticlesContainer /> */}
-          <div className="w-full h-full pt-16 pl-4 md:pl-8 lg:pl-12 p-2 text-white overflow-x-hidden overflow-y-scroll pb-48 scrollbar-hidden">
+
+        <div className="w-full flex flex-col justify-between overflow-hidden relative z-20">
+          <ParticlesContainer />
+
+          <div className="pt-16 pl-4 md:pl-8 lg:pl-12 p-2 text-white pb-48 scrollbar-hidden">
+
             <motion.div
               variants={fadeIn("right", 0.5)}
               initial="hidden"
@@ -252,17 +255,17 @@ const HomePage: React.FC = () => {
                       ></QRCodeModal>
                     ) : (
                       shortenedLink.length > 0 ?
-                      <BsQrCode
-                        onClick={(e) => {
-                          if (shortenedLink) {
-                            setQRCodeEnabled(true);
-                          } else {
-                            // setError
-                          }
-                        }}
-                        title="Generate QR code"
-                        className={`cursor-pointer`}
-                      /> : <></>
+                        <BsQrCode
+                          onClick={(e) => {
+                            if (shortenedLink) {
+                              setQRCodeEnabled(true);
+                            } else {
+                              // setError
+                            }
+                          }}
+                          title="Generate QR code"
+                          className={`cursor-pointer`}
+                        /> : <></>
                     )}
                   </div>
 
@@ -313,13 +316,12 @@ const HomePage: React.FC = () => {
                         type="text"
                         loader={true}
                         loadWhen={customURLLoading}
-                        className={`${
-                          !customURLLoading && customURLValue.length > 0
+                        className={`${!customURLLoading && customURLValue.length > 0
                             ? !isURLFound
                               ? `bg-green-500`
                               : "bg-red-500"
                             : `bg-[#222222]`
-                        }`}
+                          }`}
                         value={customURLValue}
                         onValueChange={handleCustomURLChange}
                         errorFunction={() =>
@@ -344,10 +346,9 @@ const HomePage: React.FC = () => {
                         type="datetime-local"
                         className={
                           `text-white justify-between whitespace-nowrap space-x-2 w-full cursor-pointer ` +
-                          `${
-                            !expiryTime
-                              ? `bg-[#222222]`
-                              : expiryTime !== loadedTime
+                          `${!expiryTime
+                            ? `bg-[#222222]`
+                            : expiryTime !== loadedTime
                               ? `bg-green-500`
                               : "bg-red-500"
                           }
@@ -412,10 +413,9 @@ const HomePage: React.FC = () => {
                       <div
                         className={
                           "rounded-md p-2 text-white flex items-center justify-between whitespace-nowrap space-x-2 w-full px-4 " +
-                          `${
-                            languageSelected !== "Auto"
-                              ? "bg-green-500"
-                              : "bg-[#222222]"
+                          `${languageSelected !== "Auto"
+                            ? "bg-green-500"
+                            : "bg-[#222222]"
                           }`
                         }
                       >
@@ -439,8 +439,21 @@ const HomePage: React.FC = () => {
                 the better
               </h1>
             </motion.div>
+
+
           </div>
+
+          
         </div>
+
+        <div className="h-12 px-2 w-full bg-black/70 backdrop-blur-md absolute bottom-0 text-gray-500">
+
+              <div className="flex h-full items-center justify-start space-x-1 whitespace-nowrap">
+                <span>Copyright</span> <BiCopyright /> <span>Kuts.In LLC</span> <span className="h-1 aspect-square rounded-full bg-gray-500"></span> <span>Terms and Coditions</span>
+              </div>
+
+        </div>
+
       </div>
     </div>
   );

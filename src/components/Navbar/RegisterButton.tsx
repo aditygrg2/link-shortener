@@ -30,7 +30,7 @@ const RegisterButton: React.FC = () => {
                 <AnimatePresence>
                     {
                         registerClicked &&
-                        <RightHandSlider togglerRHNModal={setRegisterClicked}>
+                        <RightHandSlider logo={false} width={40} togglerRHNModal={setRegisterClicked}>
                             <Register />
                         </RightHandSlider>
                     }
