@@ -1,6 +1,6 @@
 export const urls = {
   CLIENT_URL: "https://kuts-in.web.app",
-  SERVER_URL: "https://link-shortener-backend-epgb.onrender.com:8000",
+  SERVER_URL: "https://link-shortener-backend-epgb.onrender.com",
 };
 
 // These should be consistent as the same name is going to be used in backend.
