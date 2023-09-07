@@ -1,5 +1,5 @@
 const { languages } = require("../constants/urls");
-const Link = require("../models/Link");
+const Link = require("../models/link");
 const randomstring = require("randomstring");
 const {
   calculateGTLink,

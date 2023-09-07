@@ -1,6 +1,6 @@
 module.exports = {
   CLIENT_URL: "http://localhost:3000",
-  DRIVER_URL: "http://localhost:8000",
+  DRIVER_URL: "https://link-shortener-backend-epgb.onrender.com/",
 };
 
 module.exports.languages = {
