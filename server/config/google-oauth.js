@@ -2,6 +2,7 @@ const passport = require("passport");
 const User = require("../models/user");
 const googleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const uuid = require("uuid-random");
+const urls = require('../constants/urls')
 
 passport.use(
   new googleStrategy(
@@ -9,7 +10,7 @@ passport.use(
       clientID:
         "98092947996-kh3vchm2tkrjhhnukn5k4bhpidk298u0.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "http://localhost:8000/auth/google/callback",
+      callbackURL: `${urls.DRIVER_URL}/auth/google/callback`,
     },
 
     async function (accessToken, refreshToken, profile, done) {

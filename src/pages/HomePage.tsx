@@ -34,7 +34,6 @@ loadedTime = loadedTime.substring(0, loadedTime.lastIndexOf(":"));
 
 const HomePage: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [loading, setLoading] = useState(false);
   const [shortenedLink, setShortenedLink] = useState("");
   const [linkCopied, setLinkCopied] = useState(false);
@@ -142,7 +141,8 @@ const HomePage: React.FC = () => {
       customURLLoading ||
       isURLFound ||
       !isPasswordPatternValid(password) ||
-      loadedTime === expiryTime
+      loadedTime === expiryTime ||
+      handleCustomURLError(mainLink, isURLFound).length > 0
     );
   }, [mainLink, customURLLoading, isURLFound, mainLink, password]);
 
