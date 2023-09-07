@@ -1,6 +1,6 @@
 module.exports = {
-  CLIENT_URL: "http://localhost:3000",
-  DRIVER_URL: "https://link-shortener-backend-epgb.onrender.com/",
+  CLIENT_URL: "https://kuts-in.web.app",
+  DRIVER_URL: "https://link-shortener-backend-epgb.onrender.com:8000",
 };
 
 module.exports.languages = {
